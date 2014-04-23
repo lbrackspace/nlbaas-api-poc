@@ -1,0 +1,9 @@
+distribute>=0.7.3
+flup>=1.0
+MySQL-python==1.2.5
+SQLAlchemy==0.8.2
+Flask-SQLAlchemy==1.0
+six>=1.4.0
+jsonpickle==0.4.0
+Flask-RESTful==0.2.5
+requests
