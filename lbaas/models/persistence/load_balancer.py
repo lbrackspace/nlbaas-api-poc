@@ -1,10 +1,8 @@
-import datetime
-
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
     Boolean
 from sqlalchemy.orm import relationship
 
-from lb.models.persistence import base
+from lbaas.models.persistence import base
 
 
 class LoadbalancerModel(base.Base, base.BaseModel):
@@ -25,12 +23,12 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     protocol = Column(Integer(32))
     status = Column(Integer(32))
 
-    def __init__(self, tenant_id=None, ssl_decrypt_id=None,
-                 tls_certificate_id=None, name=None, content_switching=False,
+    def __init__(self, tenant_id=None, ssl_decrypt=None,
+                 tls_certificate=None, name=None, content_switching=False,
                  port=None, protocol=None, status=None):
         self.tenant_id = tenant_id
-        self.ssl_decrypt_id = ssl_decrypt_id
-        self.tls_certificate_id = tls_certificate_id
+        self.ssl_decrypt = ssl_decrypt
+        self.tls_certificate = tls_certificate
         self.name = name
         self.content_switching = content_switching
         self.port = port

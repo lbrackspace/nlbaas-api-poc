@@ -69,6 +69,7 @@ CREATE TABLE `ssl_decrypt` (
 DROP TABLE IF EXISTS `ssl_encrypt`;
 CREATE TABLE `ssl_encrypt` (
     `id` int(32) NOT NULL,
+    `tenant_id` varchar(128) DEFAULT NULL
     `barbican_uuid` varchar(128) DEFAULT NULL,
     `enabled` int(1) DEFAULT 0,
     PRIMARY KEY (`id`),
@@ -79,7 +80,7 @@ CREATE TABLE `ssl_encrypt` (
     `id` int(32) NOT NULL,
     `tenant_id` varchar(128) DEFAULT NULL
     `barbican_uuid` varchar(128) DEFAULT NULL,
-    `simple_certificate_data` varchar(128) DEFAULT NULL,
+    `simple_certificate_data` varchar(256) DEFAULT NULL,
     PRIMARY KEY (`id`),
 ) ENGINE=InnoDB;
 
