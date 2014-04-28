@@ -7,17 +7,17 @@ from sqlalchemy.orm import relationship
 from lbaas.models.persistence import base
 
 
-class SslDecryptModel(base.Base, base.BaseModel):
-    __tablename__ = 'ssl_decrypt'
+class SslEncryptModel(base.Base, base.BaseModel):
+    __tablename__ = 'ssl_encrypt'
     __table_args__ = {"useexisting": True}
 
-    TAG = 'ssl_decrypt'
+    TAG = 'ssl_encrypt'
 
     id_ = Column('id', Integer, primary_key=True)
     tenant_id = Column(Integer(32))
     enabled = Column(Boolean())
-    tls_certificate_id = Column(Integer, ForeignKey('ssl_decrypt.id'))
-    tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_decrypt", uselist=False))
+    tls_certificate_id = Column(Integer, ForeignKey('ssl_encrypt.id'))
+    tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_encrypt", uselist=False))
 
     def __init__(self, tenant_id=None, enabled=False,
                  tls_certificate=None):
@@ -30,4 +30,4 @@ class SslDecryptModel(base.Base, base.BaseModel):
         return ssl_dict
 
     def __repr__(self):
-        return '<SSLDecrypt %r>' % self.enabled
+        return '<SSLEncrypt %r>' % self.enabled

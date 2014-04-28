@@ -84,7 +84,7 @@ CREATE TABLE `ssl_sni_decrypt_policy` (
     `tls_certificate_id` varchar(128) DEFAULT NULL,
     `sni_match` varchar(256) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
+    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id),
     CONSTRAINT `fk_snid_decrypt_id` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
 ) ENGINE=InnoDB;
 
@@ -95,7 +95,7 @@ CREATE TABLE `ssl_sni_encrypt_policy` (
     `tls_certificate_id` varchar(128) DEFAULT NULL,
     `sni_match` varchar(256) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
+    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id),
     CONSTRAINT `fk_snie_encrypt_id` FOREIGN KEY (ssl_encrypt_id) REFERENCES ssl_encrypt(id)
 ) ENGINE=InnoDB;
 
@@ -121,7 +121,7 @@ CREATE TABLE `load_balancer` (
     `status` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_g_status` FOREIGN KEY (status) REFERENCES `enum_lbaas_status`(name),
-    CONSTRAINT `fk_p_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id),
+    CONSTRAINT `fk_p_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `lb_vip`;
@@ -141,20 +141,9 @@ CREATE TABLE `lb_l7_policy` (
     `condition` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`lb_id`, `pool_id`),
-    CONSTRAINT `fk_l7_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name)
+    CONSTRAINT `fk_l7_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name),
     CONSTRAINT `fk_p_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
     CONSTRAINT `fk_p_pool_id` FOREIGN KEY (pool_id) REFERENCES pool(id)
-) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS `lb_pool_rule`;
-CREATE TABLE `lb_pool_rule` (
-    `lb_id` int(11) NOT NULL,
-    `pool_id` int(11) DEFAULT NULL,
-    `rule_id` int(11) DEFAULT NULL,
-    PRIMARY KEY (`lb_id`, `pool_id`, `rule_id`),
-    CONSTRAINT `fk_lbpr_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
-    CONSTRAINT `fk_lbpr_pool_id` FOREIGN KEY (pool_id) REFERENCES pool(id),
-    CONSTRAINT `fk_lbpr_rule_id` FOREIGN KEY (rule_id) REFERENCES rule(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `enum_lbaas_protocol`;
