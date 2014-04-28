@@ -48,31 +48,24 @@ CREATE TABLE `health_monitor` (
     CONSTRAINT `fk_hm_type` FOREIGN KEY (type) REFERENCES enum_health_monitor_type(name)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `rule`;
-CREATE TABLE `rule` (
-    `id` int(11) NOT NULL,
-    `type` varchar(32) DEFAULT NULL,
-    `condition` varchar(128) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    CONSTRAINT `fk_r_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name)
-) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS `ssl_decrypt`;
 CREATE TABLE `ssl_decrypt` (
     `id` int(11) NOT NULL,
     `tenant_id` varchar(128) DEFAULT NULL,
-    `barbican_uuid` varchar(128) DEFAULT NULL,
+    `tls_certificate_id` int(11) DEFAULT NULL,
     `enabled` int(1) DEFAULT 0,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_sd_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `ssl_encrypt`;
 CREATE TABLE `ssl_encrypt` (
     `id` int(11) NOT NULL,
     `tenant_id` varchar(128) DEFAULT NULL,
-    `barbican_uuid` varchar(128) DEFAULT NULL,
+    `tls_certificate_id` int(11) DEFAULT NULL,
     `enabled` int(1) DEFAULT 0,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_se_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `tls_certificate`;
@@ -82,6 +75,28 @@ CREATE TABLE `tls_certificate` (
     `barbican_uuid` varchar(128) DEFAULT NULL,
     `simple_certificate_data` varchar(256) DEFAULT NULL,
     PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `ssl_sni_decrypt_policy`;
+CREATE TABLE `ssl_sni_decrypt_policy` (
+    `id` int(11) NOT NULL,
+    `ssl_decrypt_id` varchar(128) DEFAULT NULL,
+    `tls_certificate_id` varchar(128) DEFAULT NULL,
+    `sni_match` varchar(256) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
+    CONSTRAINT `fk_snid_decrypt_id` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `ssl_sni_encrypt_policy`;
+CREATE TABLE `ssl_sni_encrypt_policy` (
+    `id` int(11) NOT NULL,
+    `ssl_encrypt_id` varchar(128) DEFAULT NULL,
+    `tls_certificate_id` varchar(128) DEFAULT NULL,
+    `sni_match` varchar(256) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
+    CONSTRAINT `fk_snie_encrypt_id` FOREIGN KEY (ssl_encrypt_id) REFERENCES ssl_encrypt(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `vip`;
@@ -99,7 +114,6 @@ CREATE TABLE `load_balancer` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` varchar(128) DEFAULT NULL,
     `ssl_decrypt_id` int(11) DEFAULT NULL,
-    `tls_certificate_id` int(11) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
     `content_switching` int(1) DEFAULT 0,
     `port` int(11) DEFAULT NULL,
@@ -108,7 +122,6 @@ CREATE TABLE `load_balancer` (
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_g_status` FOREIGN KEY (status) REFERENCES `enum_lbaas_status`(name),
     CONSTRAINT `fk_p_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id),
-    CONSTRAINT `fk_p_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `lb_vip`;
@@ -120,12 +133,15 @@ CREATE TABLE `lb_vip` (
     CONSTRAINT `fk_v_vip_id` FOREIGN KEY (vip_id) REFERENCES vip(id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `lb_pool`;
-CREATE TABLE `lb_pool` (
+DROP TABLE IF EXISTS `lb_l7_policy`;
+CREATE TABLE `lb_l7_policy` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `lb_id` int(11) NOT NULL,
     `pool_id` int(11) DEFAULT NULL,
-    `default` int(1) DEFAULT 0,
+    `condition` varchar(32) DEFAULT NULL,
+    `type` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`lb_id`, `pool_id`),
+    CONSTRAINT `fk_l7_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name)
     CONSTRAINT `fk_p_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
     CONSTRAINT `fk_p_pool_id` FOREIGN KEY (pool_id) REFERENCES pool(id)
 ) ENGINE=InnoDB;
