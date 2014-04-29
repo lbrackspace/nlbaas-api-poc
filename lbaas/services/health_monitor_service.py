@@ -1,5 +1,4 @@
 from lbaas.services.base import BaseService
-from lbaas.models.persistence.health_monitor import HealthMonitorModel
 
 
 class HealthMonitorService(BaseService):
@@ -8,7 +7,7 @@ class HealthMonitorService(BaseService):
 
 # type, status_regex, body_regex, delay, timeout, attempts, path, host_header
     def create(self, account_id, pool_id, health_monitor):
-        monitor = self.monitorpersistence.monitor.create(
+        monitor = self.monitor_persistence.monitor.create(
             account_id, pool_id, health_monitor.get('host_header'),
             health_monitor.get('status_regex'), health_monitor.get('path'),
             health_monitor.get('body_regex'), health_monitor.get('delay'),
@@ -18,4 +17,4 @@ class HealthMonitorService(BaseService):
 
     class HealthMonitorServiceOps(object):
         def __init__(self):
-            self.monitor = HealthMonitorService()
+            self.monitor_service = HealthMonitorService()

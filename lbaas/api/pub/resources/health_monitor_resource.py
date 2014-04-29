@@ -11,6 +11,7 @@ class HealthMonitorResource(BaseResource):
         monitor = HealthMonitorPersistence.get(tenant_id, pool_id)
         return jsonify({"health_monitor": monitor.to_dict()})
 
+# TODO:  Fix this method in regards to its arguments and implementation
     def post(self, tenant_id, pool_id, health_monitor):
         json_body = self.get_request_body(request)
         json_monitor = json_body.get('monitor')

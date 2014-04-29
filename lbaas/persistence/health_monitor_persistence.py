@@ -22,8 +22,11 @@ class HealthMonitorPersistence(BaseService):
     def update(self, tenant_id, pool_id, json_monitor):
         monitor = health_monitor.HealthMonitorModel.query(
             id_=json_monitor.id_).first()
-
         pass
 
     def delete(self):
         pass
+
+class HealthMonitorPersistenceOps(object):
+    def __init__(self):
+        self.monitor = HealthMonitorPersistence(self)

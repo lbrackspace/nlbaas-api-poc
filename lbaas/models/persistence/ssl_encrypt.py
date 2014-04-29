@@ -2,7 +2,8 @@ import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
     Boolean
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
+from lbaas.models.persistence.tls_certificate import TlsCertificateModel
 
 from lbaas.models.persistence import base
 
@@ -16,7 +17,7 @@ class SslEncryptModel(base.Base, base.BaseModel):
     id_ = Column('id', Integer, primary_key=True)
     tenant_id = Column(Integer(32))
     enabled = Column(Boolean())
-    tls_certificate_id = Column(Integer, ForeignKey('ssl_encrypt.id'))
+    tls_certificate_id = Column(Integer, ForeignKey('tls_certificate.id'))
     tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_encrypt", uselist=False))
 
     def __init__(self, tenant_id=None, enabled=False,
