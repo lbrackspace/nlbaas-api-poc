@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
     Boolean
 from sqlalchemy.orm import relationship, backref
+from lbaas.models.persistence.ssl_decrypt import SslDecryptModel
 
 from lbaas.models.persistence import base
 
