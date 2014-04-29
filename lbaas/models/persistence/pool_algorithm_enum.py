@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from geolb.models.persistence import base
+from lbaas.models.persistence import base
 
 
 class lbStatusEnumModel(base.Base, base.BaseModel):

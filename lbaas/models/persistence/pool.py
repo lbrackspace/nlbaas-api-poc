@@ -1,7 +1,12 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
-    Boolean
+from sqlalchemy import Boolean
+from sqlalchemy import Column
+from sqlalchemy import DateTime
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy import Table
+from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
-
 from lbaas.models.persistence import base
 
 
@@ -14,9 +19,11 @@ class PoolModel(base.Base, base.BaseModel):
     id_ = Column('id', Integer, primary_key=True)
     tenant_id = Column(Integer(32))
     health_monitor_id = Column(Integer, ForeignKey('health_monitor.id'))
-    health_monitor = relationship("HealthMonitorModel", backref=backref("pool", uselist=False))
+    health_monitor = relationship("HealthMonitorModel",
+                                  backref=backref("pool", uselist=False))
     ssl_encrypt_id = Column(Integer, ForeignKey('ssl_encrypt.id'))
-    ssl_encrypt = relationship("SslEncryptModel", backref=backref("pool", uselist=False))
+    ssl_encrypt = relationship("SslEncryptModel",
+                               backref=backref("pool", uselist=False))
     name = Column(String(128))
     subnet_id = Column(Integer(32))
     algorithm = Column(String(32))
