@@ -4,7 +4,7 @@ SET foreign_key_checks=0;
 
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
-    `id` varchar(128) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `pool_id` int(11) DEFAULT NULL,
     `ip` varchar(128) DEFAULT NULL,
     `condition` varchar(32) DEFAULT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE `member` (
 
 DROP TABLE IF EXISTS `pool`;
 CREATE TABLE `pool` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `health_monitor_id` int(11) NOT NULL,
     `tenant_id` varchar(128) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `pool` (
 
 DROP TABLE IF EXISTS `health_monitor`;
 CREATE TABLE `health_monitor` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `type` varchar(32) DEFAULT NULL,
     `delay` int(11) DEFAULT NULL,
     `timeout` int(11) DEFAULT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `health_monitor` (
 
 DROP TABLE IF EXISTS `ssl_decrypt`;
 CREATE TABLE `ssl_decrypt` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` varchar(128) DEFAULT NULL,
     `tls_certificate_id` int(11) DEFAULT NULL,
     `enabled` int(1) DEFAULT 0,
@@ -60,7 +60,7 @@ CREATE TABLE `ssl_decrypt` (
 
 DROP TABLE IF EXISTS `ssl_encrypt`;
 CREATE TABLE `ssl_encrypt` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` varchar(128) DEFAULT NULL,
     `tls_certificate_id` int(11) DEFAULT NULL,
     `enabled` int(1) DEFAULT 0,
@@ -70,7 +70,7 @@ CREATE TABLE `ssl_encrypt` (
 
 DROP TABLE IF EXISTS `tls_certificate`;
 CREATE TABLE `tls_certificate` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` varchar(128) DEFAULT NULL,
     `barbican_uuid` varchar(128) DEFAULT NULL,
     `simple_certificate_data` varchar(256) DEFAULT NULL,
@@ -79,29 +79,29 @@ CREATE TABLE `tls_certificate` (
 
 DROP TABLE IF EXISTS `ssl_sni_decrypt_policy`;
 CREATE TABLE `ssl_sni_decrypt_policy` (
-    `id` int(11) NOT NULL,
-    `ssl_decrypt_id` varchar(128) DEFAULT NULL,
-    `tls_certificate_id` varchar(128) DEFAULT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `sni_match` varchar(256) DEFAULT NULL,
+    `ssl_decrypt_id` int(11) DEFAULT NULL,
+    `tls_certificate_id` int(11) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id),
-    CONSTRAINT `fk_snid_decrypt_id` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
+    CONSTRAINT `fk_snid_decrypt_id` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id),
+    CONSTRAINT `fk_snid_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `ssl_sni_encrypt_policy`;
 CREATE TABLE `ssl_sni_encrypt_policy` (
-    `id` int(11) NOT NULL,
-    `ssl_encrypt_id` varchar(128) DEFAULT NULL,
-    `tls_certificate_id` varchar(128) DEFAULT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `ssl_encrypt_id` int(11) DEFAULT NULL,
+    `tls_certificate_id` int(11) DEFAULT NULL,
     `sni_match` varchar(256) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_sni_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id),
+    CONSTRAINT `fk_snie_tls_cert` FOREIGN KEY (tls_certificate_id) REFERENCES tls_certificate(id),
     CONSTRAINT `fk_snie_encrypt_id` FOREIGN KEY (ssl_encrypt_id) REFERENCES ssl_encrypt(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `vip`;
 CREATE TABLE `vip` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` varchar(128) DEFAULT NULL,
     `subnet_id` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
@@ -120,8 +120,8 @@ CREATE TABLE `load_balancer` (
     `protocol` varchar(32) DEFAULT NULL,
     `status` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_g_status` FOREIGN KEY (status) REFERENCES `enum_lbaas_status`(name),
-    CONSTRAINT `fk_p_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
+    CONSTRAINT `fk_l_status` FOREIGN KEY (status) REFERENCES `enum_lbaas_status`(name),
+    CONSTRAINT `fk_l_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `lb_vip`;
@@ -140,10 +140,10 @@ CREATE TABLE `lb_l7_policy` (
     `pool_id` int(11) DEFAULT NULL,
     `condition` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
-    PRIMARY KEY (`lb_id`, `pool_id`),
+    PRIMARY KEY (`id`),
     CONSTRAINT `fk_l7_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name),
-    CONSTRAINT `fk_p_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
-    CONSTRAINT `fk_p_pool_id` FOREIGN KEY (pool_id) REFERENCES pool(id)
+    CONSTRAINT `fk_l7_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
+    CONSTRAINT `fk_l7_pool_id` FOREIGN KEY (pool_id) REFERENCES pool(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `enum_lbaas_protocol`;
