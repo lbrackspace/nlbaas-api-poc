@@ -8,11 +8,6 @@ class HealthMonitorPersistence(BaseService):
 
     def create(self, tenant_id, pool_id, monitor):
         ##Do the stuffs here:
-        #account_id, pool_id, health_monitor.get('host_header'),
-        #    health_monitor.get('status_regex'), health_monitor.get('path'),
-        #    health_monitor.get('body_regex'), health_monitor.get('delay'),
-        #    health_monitor.get('timeout'), health_monitor.get('attempts'),
-        #    health_monitor.get('type')
         pass
 
     def update(self):
@@ -20,3 +15,7 @@ class HealthMonitorPersistence(BaseService):
 
     def delete(self):
         pass
+
+class HealthMonitorPersistenceOps(object):
+    def __init__(self):
+        self.monitor = HealthMonitorPersistence(self)
