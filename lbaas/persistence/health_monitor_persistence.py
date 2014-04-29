@@ -1,21 +1,28 @@
+from lbaas.models.persistence import base
 from lbaas.models.persistence import health_monitor
 from lbaas.persistence.base import BaseService
 
 
 class HealthMonitorPersistence(BaseService):
-    def get(self):
-        pass
+    def get(self, tenant_id, pool_id):
+        monitor = health_monitor.HealthMonitorModel. \
+            query.filter_by(tenant_id=tenant_id, pool_id=pool_id).first()
+        return monitor
 
-    def create(self, tenant_id, pool_id, monitor):
-        ##Do the stuffs here:
-        #account_id, pool_id, health_monitor.get('host_header'),
-        #    health_monitor.get('status_regex'), health_monitor.get('path'),
-        #    health_monitor.get('body_regex'), health_monitor.get('delay'),
-        #    health_monitor.get('timeout'), health_monitor.get('attempts'),
-        #    health_monitor.get('type')
-        pass
+    def create(self, tenant_id, pool_id, json_monitor):
+        monitor = health_monitor.HealthMonitorModel(
+            json_monitor.get('host_header'), json_monitor.get('status_regex'),
+            json_monitor.get('path'), json_monitor.get('body_regex'),
+            json_monitor.get('delay'), json_monitor.get('timeout'),
+            json_monitor.get('attempts'), json_monitor.get('type'))
+        base.db.session.add(monitor)
+        base.db.session.commit()
+        return monitor
 
-    def update(self):
+    def update(self, tenant_id, pool_id, json_monitor):
+        monitor = health_monitor.HealthMonitorModel.query(
+            id_=json_monitor.id_).first()
+
         pass
 
     def delete(self):
