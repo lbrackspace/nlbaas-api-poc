@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from lbaas.models.persistence import base
 
 
-class PoolModel(base.Base, base.BaseModel):
+class VipModel(base.Base, base.BaseModel):
     __tablename__ = 'vip'
     __table_args__ = {"useexisting": True}
 

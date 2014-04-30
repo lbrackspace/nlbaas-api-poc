@@ -15,7 +15,7 @@ class LbL7PolicyModel(base.Base, base.BaseModel):
     lb_id = Column(Integer, ForeignKey('load_balancer.id'))
     load_balancer = relationship("LoadbalancerModel", backref=backref("lb_l7_policy", uselist=False))
     pool_id = Column(Integer, ForeignKey('pool.id'))
-    pool = relationship("PoolModel", backref=backref("lb_l7_policy", uselist=False))
+    pool = relationship("PoolModel", backref=backref("lb_l7_policy"))
 
     def __init__(self, load_balancer=None, vip=None):
         self.load_balancer = load_balancer

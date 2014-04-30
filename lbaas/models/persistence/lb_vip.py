@@ -2,6 +2,9 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
     Boolean
 from sqlalchemy.orm import relationship, backref
 
+from lbaas.models.persistence.load_balancer import LoadbalancerModel
+from lbaas.models.persistence.vip import VipModel
+
 from lbaas.models.persistence import base
 
 
@@ -12,9 +15,10 @@ class LbVipModel(base.Base, base.BaseModel):
     TAG = 'lb_vip'
 
     lb_id = Column(Integer, ForeignKey('load_balancer.id'))
-    load_balancer = relationship("LoadbalancerModel", backref=backref("lb_vip", uselist=False))
     vip_id = Column(Integer, ForeignKey('vip.id'))
-    vip = relationship("VipModel", backref=backref("lb_vip", uselist=False))
+
+    load_balancer = relationship(LoadbalancerModel, backref=backref("lb_vip", cascade="all"))
+    vip = relationship("VipModel")
 
     def __init__(self, load_balancer=None, vip=None):
         self.load_balancer = load_balancer
