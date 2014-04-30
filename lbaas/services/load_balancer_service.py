@@ -1,6 +1,7 @@
 from lbaas.services.base import BaseService
 
 class LoadbalancerService(BaseService):
+
     def get_all(self, tenant_id):
         lbs = self.lb_persistence.loadbalancer.get_all(tenant_id)
         return lbs

@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
     Boolean
 from sqlalchemy.orm import relationship, backref
 from lbaas.models.persistence.ssl_decrypt import SslDecryptModel
+from lbaas.models.persistence.pool import PoolModel
 
 from lbaas.models.persistence import base
 
@@ -14,6 +15,8 @@ class LoadbalancerModel(base.Base, base.BaseModel):
 
     id_ = Column('id', Integer, primary_key=True)
     tenant_id = Column(Integer(32))
+    pool_id = Column(Integer, ForeignKey('pool.id'))
+    pool = relationship("PoolModel", backref=backref("load_balancer", uselist=False))
     ssl_decrypt_id = Column(Integer, ForeignKey('ssl_decrypt.id'))
     ssl_decrypt = relationship("SslDecryptModel", backref=backref("load_balancer", uselist=False))
     name = Column(String(128))
@@ -22,10 +25,11 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     protocol = Column(Integer(32))
     status = Column(Integer(32))
 
-    def __init__(self, tenant_id=None, ssl_decrypt=None, name=None,
+    def __init__(self, tenant_id=None, pool=None, ssl_decrypt=None, name=None,
                  content_switching=False, port=None, protocol=None,
                  status=None):
         self.tenant_id = tenant_id
+        self.pool = pool
         self.ssl_decrypt = ssl_decrypt
         self.name = name
         self.content_switching = content_switching
