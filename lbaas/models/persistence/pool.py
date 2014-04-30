@@ -8,6 +8,7 @@ from sqlalchemy import Table
 from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
 from lbaas.models.persistence import base
+from lbaas.models.persistence.ssl_encrypt import SslEncryptModel
 
 
 class PoolModel(base.Base, base.BaseModel):

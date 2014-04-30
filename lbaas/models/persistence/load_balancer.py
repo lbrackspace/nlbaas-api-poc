@@ -15,7 +15,7 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     id_ = Column('id', Integer, primary_key=True)
     tenant_id = Column(Integer(32))
     ssl_decrypt_id = Column(Integer, ForeignKey('ssl_decrypt.id'))
-    ssl_decrypt = relationship("SslDecryptModel", backref=backref("load_balancer", uselist=False))
+    ssl_decrypt = relationship("SslDecryptModel",backref=backref("load_balancer", uselist=False))
     name = Column(String(128))
     content_switching = Column(Boolean(128))
     port = Column(String(32))
