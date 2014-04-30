@@ -2,7 +2,9 @@ from flask.ext.restful import Resource
 from lbaas.persistence.health_monitor_persistence \
     import HealthMonitorPersistenceOps
 from lbaas.persistence.load_balancer_persistence \
-    import LoadbalancerPersistenceOps
+import LoadbalancerPersistenceOps
+from lbaas.persistence.pool_persistence import PoolPersistenceOps
+from lbaas.persistence.member_persistence import MemberPersistenceOps
 
 
 class BaseService(Resource):
@@ -10,3 +12,5 @@ class BaseService(Resource):
         #Init persistence classes here ex:
         self.lb_persistence = LoadbalancerPersistenceOps()
         self.monitor_persistence = HealthMonitorPersistenceOps()
+        self.pool_persistence = PoolPersistenceOps()
+        self.member_persistence = MemberPersistenceOps()
