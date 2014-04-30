@@ -11,10 +11,10 @@ class PoolResource(BaseResource):
         pools = {"pools": pool_list}
         return pools
 
-    def post(self, account_id, pool_id, health_monitor):
+    def post(self, account_id):
         pass
 
-    def put(self, account_id, pool_id, health_monitor):
+    def put(self, account_id, pool_id):
         # Object validation, error handling, etc...
         pass
 

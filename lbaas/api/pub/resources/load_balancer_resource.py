@@ -12,13 +12,13 @@ class LoadbalancerResource(BaseResource):
         lbs = {"loadbalancers": lb_list}
         return lbs
 
-    def post(self, account_id, pool_id, health_monitor):
+    def post(self, account_id):
         pass
 
-    def put(self, account_id, pool_id, health_monitor):
+    def put(self, account_id, lb_id):
         # Object validation, error handling, etc...
         pass
 
-    def delete(self, accound_id, pool_id):
+    def delete(self, accound_id, lb_id):
         # Object validation, error handling, etc...
         pass

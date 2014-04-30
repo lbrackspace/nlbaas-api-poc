@@ -7,6 +7,7 @@ CREATE TABLE `member` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `pool_id` int(11) DEFAULT NULL,
     `ip` varchar(128) DEFAULT NULL,
+    `port` int(11) DEFAULT NULL,
     `condition` varchar(32) DEFAULT NULL,
     `weight` int(11) DEFAULT NULL,
     `status` varchar(32) DEFAULT NULL,

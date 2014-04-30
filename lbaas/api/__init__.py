@@ -17,12 +17,13 @@ api = Api(app)
 
 
 #from lbaas.api.pub.resources import #resources imported here...
-from lbaas.api.pub.resources \
-    import load_balancer_resource, health_monitor_resource, pool_resource
+from lbaas.api.pub.resources import load_balancer_resource, \
+    health_monitor_resource, pool_resource, member_resource
 
 ##Add resources and routes here...
 api.add_resource(load_balancer_resource.LoadbalancerResource, '/<int:tenant_id>/loadbalancers')
-api.add_resource(health_monitor_resource.HealthMonitorResource, '/<int:tenant_id>/healthmonitor')
+api.add_resource(health_monitor_resource.HealthMonitorResource, '/<int:tenant_id>/pools/<int:pool_id>/healthmonitor')
 api.add_resource(pool_resource.PoolResource, '/<int:tenant_id>/pools')
+api.add_resource(member_resource.MemberResource, '/<int:tenant_id>/pools/<int:pool_id>/members')
 
 base.db.init_app(app)

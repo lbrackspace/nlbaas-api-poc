@@ -4,6 +4,7 @@ from lbaas.persistence.health_monitor_persistence \
 from lbaas.persistence.load_balancer_persistence \
 import LoadbalancerPersistenceOps
 from lbaas.persistence.pool_persistence import PoolPersistenceOps
+from lbaas.persistence.member_persistence import MemberPersistenceOps
 
 
 class BaseService(Resource):
@@ -12,3 +13,4 @@ class BaseService(Resource):
         self.lb_persistence = LoadbalancerPersistenceOps()
         self.monitor_persistence = HealthMonitorPersistenceOps()
         self.pool_persistence = PoolPersistenceOps()
+        self.member_persistence = MemberPersistenceOps()
