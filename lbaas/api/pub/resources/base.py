@@ -4,7 +4,7 @@ import flask
 
 import lbaas.models.persistence.base as base_model
 
-from flask.ext.restful import Resource
+from flask_restful import Resource
 
 
 class BaseResource(Resource):
@@ -25,9 +25,7 @@ class BaseResource(Resource):
             raise flask.abort(400)
         return json_body
 
-    def _verify_response_body(self, response_body, tag):
-        if response_body is None:
-            flask.abort(404)
+    def _verify_and_form_response_body(self, response_body, tag):
         if isinstance(response_body, base_model.BaseModel):
             response_body = flask.jsonify(
                 {tag: response_body.to_dict()})

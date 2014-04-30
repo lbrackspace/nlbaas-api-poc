@@ -18,7 +18,14 @@ class BaseModel(object):
 
     def get_pub_vars(self):
         pub_vars = {}
-        for attr_name in vars(self):
+        # attrs = dir(self)
+        attrs = vars(self)
+        for attr_name in attrs:
+            if getattr(self, attr_name) is None:
+                continue
             if attr_name[0] != '_':
-                pub_vars[attr_name] = vars(self)[attr_name]
+                if isinstance(getattr(self, attr_name), BaseModel):
+                    pub_vars[attr_name] = getattr(self, attr_name).to_dict()
+                else:
+                    pub_vars[attr_name] = getattr(self, attr_name)
         return pub_vars

@@ -7,7 +7,7 @@ from lbaas.services import member_service
 class MemberResource(BaseResource):
     def get(self, tenant_id, pool_id, member_id):
         member = member_service.MemberService().get(pool_id, member_id)
-        return self._verify_response_body(member, 'member')
+        return self._verify_and_form_response_body(member, 'member')
 
     def post(self, tenant_id, pool_id):
         pass
@@ -24,7 +24,7 @@ class MemberResource(BaseResource):
 class MembersResource(BaseResource):
     def get(self, tenant_id, pool_id):
         members = member_service.MemberService().get_all(pool_id)
-        return self._verify_response_body(members, 'members')
+        return self._verify_and_form_response_body(members, 'members')
 
     def post(self, tenant_id, pool_id):
         pass

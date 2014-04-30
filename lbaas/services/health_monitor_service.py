@@ -2,6 +2,11 @@ from lbaas.services.base import BaseService
 
 
 class HealthMonitorService(BaseService):
+
+    def get(self, tenant_id, pool_id):
+        monitor = self.monitor_persistence.monitor.get(pool_id)
+        return monitor
+
     def get_all(self):
         pass
 

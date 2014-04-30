@@ -42,9 +42,5 @@ class PoolModel(base.Base, base.BaseModel):
         self.algorithm = algorithm
         self.session_persistence = session_persistence
 
-    def to_dict(self):
-        sp_dict = {'id': self.id_, 'name': self.name}
-        return sp_dict
-
     def __repr__(self):
         return '<Pool %r>' % self.name

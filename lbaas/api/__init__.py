@@ -2,7 +2,8 @@ import ConfigParser
 
 from flask import Flask
 from lbaas.models.persistence import base
-from flask.ext.restful import Resource, Api
+from flask_restful import Resource, Api
+from lbaas.services.base import BaseService
 
 filename = 'config.cfg'
 config = ConfigParser.SafeConfigParser()
@@ -14,7 +15,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (
     config.get('api', 'address'), config.get('api', 'dbname'))
 
 api = Api(app)
-
 
 #from lbaas.api.pub.resources import #resources imported here...
 from lbaas.api.pub.resources import load_balancer_resource, \
@@ -29,3 +29,4 @@ api.add_resource(member_resource.MembersResource, '/<int:tenant_id>/pools/<int:p
 api.add_resource(member_resource.MemberResource, '/<int:tenant_id>/pools/<int:pool_id>/members/<int:member_id>')
 
 base.db.init_app(app)
+app.before_request(BaseService().validate_resources)

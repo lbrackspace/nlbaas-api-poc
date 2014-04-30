@@ -8,7 +8,7 @@ from lbaas.services \
 class LoadbalancerResource(BaseResource):
     def get(self, tenant_id):
         lbs = load_balancer_service.LoadbalancerService().get_all(tenant_id)
-        return self._verify_response_body(lbs, 'loadbalancers')
+        return self._verify_and_form_response_body(lbs, 'loadbalancers')
 
     def post(self, account_id):
         pass
