@@ -115,6 +115,7 @@ CREATE TABLE `load_balancer` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` varchar(128) DEFAULT NULL,
     `ssl_decrypt_id` int(11) DEFAULT NULL,
+    `pool_id` int(11) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
     `content_switching` int(1) DEFAULT 0,
     `port` int(11) DEFAULT NULL,
@@ -122,7 +123,8 @@ CREATE TABLE `load_balancer` (
     `status` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_l_status` FOREIGN KEY (status) REFERENCES `enum_lbaas_status`(name),
-    CONSTRAINT `fk_l_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id)
+    CONSTRAINT `fk_l_ssl_decrypt` FOREIGN KEY (ssl_decrypt_id) REFERENCES ssl_decrypt(id),
+    CONSTRAINT `fk_l_pool` FOREIGN KEY (pool_id) REFERENCES pool(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `lb_vip`;
