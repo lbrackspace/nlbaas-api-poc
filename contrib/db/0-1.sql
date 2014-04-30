@@ -20,7 +20,7 @@ CREATE TABLE `member` (
 DROP TABLE IF EXISTS `pool`;
 CREATE TABLE `pool` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `health_monitor_id` int(11) NOT NULL,
+    `health_monitor_id` int(11) DEFAULT NULL,
     `tenant_id` varchar(128) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
     `subnet_id` varchar(128) DEFAULT NULL,
