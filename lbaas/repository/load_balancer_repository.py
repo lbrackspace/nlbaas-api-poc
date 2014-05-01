@@ -1,8 +1,8 @@
 from lbaas.models.persistence import base, load_balancer
-from lbaas.persistence.base import BaseService
+from lbaas.repository.base import BaseService
 
 
-class LoadbalancerPersistence(BaseService):
+class LoadbalancerRepository(BaseService):
 
     def get(self, tenant_id, lb_id):
         lb = load_balancer.LoadbalancerModel.query.filter_by(
@@ -29,6 +29,6 @@ class LoadbalancerPersistence(BaseService):
         pass
 
 
-class LoadbalancerPersistenceOps(object):
+class LoadbalancerRepositoryOps(object):
     def __init__(self):
-        self.loadbalancer = LoadbalancerPersistence(self)
+        self.loadbalancer = LoadbalancerRepository(self)

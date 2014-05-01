@@ -1,8 +1,8 @@
 from lbaas.models.persistence import base, pool
-from lbaas.persistence.base import BaseService
+from lbaas.repository.base import BaseService
 
 
-class PoolPersistence(BaseService):
+class PoolRepository(BaseService):
 
     def get(self, tenant_id, pool_id):
         ret_pool = pool.PoolModel.query.filter_by(tenant_id=tenant_id,
@@ -27,6 +27,6 @@ class PoolPersistence(BaseService):
         pass
 
 
-class PoolPersistenceOps(object):
+class PoolRepositoryOps(object):
     def __init__(self):
-        self.pool = PoolPersistence(self)
+        self.pool = PoolRepository(self)

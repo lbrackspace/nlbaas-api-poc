@@ -30,7 +30,7 @@ class LoadbalancersService(BaseService):
 
         ##Pool Model
         pool_json = json_lb.get('pool')
-        pool_in = ""
+        pool_in = None
         if pool_json is not None:
             members_json = pool_json.get('members')
             members_in = []
@@ -39,8 +39,8 @@ class LoadbalancersService(BaseService):
                     members_in.append(member.MemberModel(ip=m.get('ip'),
                                                          port=m.get('port'),
                                                          weight=m.get('weight'),
-
                                                          condition=m.get('condition')))
+
             hm_json = json_lb.get('health_monitor')
             healthmonitor_in = ""
             if hm_json is not None:
@@ -73,7 +73,11 @@ class LoadbalancersService(BaseService):
 
 
         lb_in = load_balancer.LoadbalancerModel(tenant_id, vips=vips_in,
-                                                pool=pool_in,)
+                                                name=json_lb.get('name'),
+                                                port=json_lb.get('port'),
+                                                protocol=json_lb.get('protocol'),
+                                                status="BUILD",
+                                                pool=pool_in)
         lb = self.lb_persistence.loadbalancer.create(lb_in)
         return lb
 

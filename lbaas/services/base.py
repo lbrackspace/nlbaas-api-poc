@@ -1,22 +1,22 @@
 import flask
 from flask import request
 from flask_restful import Resource
-from lbaas.persistence.health_monitor_persistence \
-    import HealthMonitorPersistenceOps
-from lbaas.persistence.load_balancer_persistence \
-import LoadbalancerPersistenceOps
-from lbaas.persistence.pool_persistence import PoolPersistenceOps
-from lbaas.persistence.member_persistence import MemberPersistenceOps
+from lbaas.repository.health_monitor_repository \
+    import HealthMonitorRepositoryOps
+from lbaas.repository.load_balancer_repository \
+import LoadbalancerRepositoryOps
+from lbaas.repository.pool_repository import PoolRepositoryOps
+from lbaas.repository.member_repository import MemberRepositoryOps
 
 
 class BaseService(Resource):
     def __init__(self):
         #Init persistence classes here ex:
         ##naming and links looks odd, figure how to chain differently
-        self.lb_persistence = LoadbalancerPersistenceOps()
-        self.monitor_persistence = HealthMonitorPersistenceOps()
-        self.pool_persistence = PoolPersistenceOps()
-        self.member_persistence = MemberPersistenceOps()
+        self.lb_persistence = LoadbalancerRepositoryOps()
+        self.monitor_persistence = HealthMonitorRepositoryOps()
+        self.pool_persistence = PoolRepositoryOps()
+        self.member_persistence = MemberRepositoryOps()
 
     def validate_resources(self):
         resources = request.view_args.copy()

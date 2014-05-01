@@ -1,10 +1,10 @@
 from lbaas.models.persistence import base
 from lbaas.models.persistence import health_monitor
 from lbaas.models.persistence import pool
-from lbaas.persistence.base import BaseService
+from lbaas.repository.base import BaseService
 
 
-class HealthMonitorPersistence(BaseService):
+class HealthMonitorRepository(BaseService):
     def get(self, pool_id):
         monitor_pool = pool.PoolModel.query.filter_by(id_=pool_id).first()
         return monitor_pool.health_monitor
@@ -20,6 +20,6 @@ class HealthMonitorPersistence(BaseService):
     def delete(self):
         pass
 
-class HealthMonitorPersistenceOps(object):
+class HealthMonitorRepositoryOps(object):
     def __init__(self):
-        self.monitor = HealthMonitorPersistence(self)
+        self.monitor = HealthMonitorRepository(self)

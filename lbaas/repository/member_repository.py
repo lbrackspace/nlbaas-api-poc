@@ -1,8 +1,8 @@
 from lbaas.models.persistence import base, member
-from lbaas.persistence.base import BaseService
+from lbaas.repository.base import BaseService
 
 
-class MemberPersistence(BaseService):
+class MemberRepository(BaseService):
 
     def get(self, pool_id, member_id):
         ret_member = member.MemberModel.query.filter_by(pool_id=pool_id,
@@ -23,6 +23,6 @@ class MemberPersistence(BaseService):
         pass
 
 
-class MemberPersistenceOps(object):
+class MemberRepositoryOps(object):
     def __init__(self):
-        self.member = MemberPersistence(self)
+        self.member = MemberRepository(self)
