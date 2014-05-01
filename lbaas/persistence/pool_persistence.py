@@ -21,7 +21,7 @@ class PoolPersistence(BaseService):
     def update(self, pool_model):
         base.db.session.add(pool_model)
         base.db.session.commit()
-        return updated_pool
+        return pool_model
 
     def delete(self):
         pass

@@ -10,18 +10,9 @@ class HealthMonitorPersistence(BaseService):
         return monitor_pool.health_monitor
 
     def create(self, monitor):
-        created_monitor = health_monitor.HealthMonitorModel(
-            host_header=monitor.get('host_header'),
-            path=monitor.get('path'),
-            body_regex=monitor.get('body_regex'),
-            status_regex=monitor.get('status_regex'),
-            delay=monitor.get('delay'),
-            timeout=monitor.get('timeout'),
-            attempts=monitor.get('attempts'),
-            type=monitor.get('type'))
-        base.db.session.add(created_monitor)
+        base.db.session.add(monitor)
         base.db.session.commit()
-        return created_monitor
+        return monitor
 
     def update(self, tenant_id, pool_id, json_monitor):
         pass

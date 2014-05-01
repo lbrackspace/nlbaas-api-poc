@@ -1,4 +1,5 @@
 from lbaas.services.base import BaseService
+from lbaas.models.persistence.member import MemberModel
 
 
 class MemberService(BaseService):

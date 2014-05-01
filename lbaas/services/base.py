@@ -20,7 +20,7 @@ class BaseService(Resource):
 
     def validate_resources(self):
         resources = request.view_args.copy()
-        if 'healthmonitor' in request.path:
+        if 'healthmonitor' in request.path and request.method != 'POST':
             resources['health_monitor'] = True
         self._validate_all_resources_exist(**resources)
 
