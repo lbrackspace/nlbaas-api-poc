@@ -14,11 +14,15 @@ class HealthMonitorRepository(BaseService):
         base.db.session.commit()
         return monitor
 
-    def update(self, tenant_id, pool_id, json_monitor):
-        pass
+    def update(self, hm_model):
+        base.db.session.add(hm_model)
+        base.db.session.commit()
+        return hm_model
 
-    def delete(self):
-        pass
+    def delete(self, hm_model):
+        base.db.session.delete(hm_model)
+        base.db.session.commit()
+        return hm_model
 
 class HealthMonitorRepositoryOps(object):
     def __init__(self):

@@ -13,14 +13,21 @@ class MemberRepository(BaseService):
         members = member.MemberModel.query.filter_by(pool_id=pool_id).all()
         return members
 
-    def create(self):
-        pass
+    def create(self, member_model):
+        base.db.session.add(member_model)
+        base.db.session.commit()
+        return member_model
 
-    def update(self):
-        pass
+    def update(self, member_model):
+        base.db.session.add(member_model)
+        base.db.session.commit()
+        return member_model
 
-    def delete(self):
-        pass
+
+    def delete(self, member_model):
+        base.db.session.delete(member_model)
+        base.db.session.commit()
+        return member_model
 
 
 class MemberRepositoryOps(object):

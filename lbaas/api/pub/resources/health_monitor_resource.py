@@ -21,6 +21,6 @@ class HealthMonitorResource(BaseResource):
     def put(self, tenant_id, pool_id, health_monitor):
         pass
 
-    def delete(self, accound_id, pool_id):
-        # Object validation, error handling, etc...
-        pass
+    def delete(self, tenant_id, pool_id):
+        health_monitor_service.HealthMonitorService().delete(tenant_id,
+                                                             pool_id)

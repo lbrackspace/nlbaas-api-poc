@@ -14,7 +14,7 @@ class PoolResource(BaseResource):
         return self._verify_and_form_response_body(pool, 'pool',
                                                    remove=_attrs_to_remove)
 
-    def post(self, tenant_id):
+    def post(self, tenant_id, pool_id):
         flask.abort(405)
 
     def put(self, tenant_id, pool_id):
@@ -22,8 +22,7 @@ class PoolResource(BaseResource):
         pass
 
     def delete(self, tenant_id, pool_id):
-        # Object validation, error handling, etc...
-        pass
+        pool_service.PoolService().delete(tenant_id, pool_id)
 
 
 class PoolsResource(BaseResource):
@@ -36,7 +35,8 @@ class PoolsResource(BaseResource):
         pool = self.get_request_body(request)
         pool = pool.get('pool')
         created_pool = pool_service.PoolService().create(tenant_id, pool)
-        return self._verify_and_form_response_body(created_pool, 'pool')
+        return self._verify_and_form_response_body(created_pool, 'pool',
+                                                   remove=_attrs_to_remove)
 
     def put(self, tenant_id, pool_id):
         flask.abort(405)

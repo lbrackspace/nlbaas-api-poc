@@ -1,6 +1,5 @@
 from lbaas.services.base import BaseService
 from lbaas.models.persistence.health_monitor import HealthMonitorModel
-from lbaas.models.persistence.pool import PoolModel
 
 
 class HealthMonitorService(BaseService):
@@ -28,6 +27,27 @@ class HealthMonitorService(BaseService):
         updated_pool.health_monitor = created_monitor
         self.pool_persistence.pool.update(updated_pool)
         return monitor
+
+    def update(self, tenant_id, pool_id, monitor):
+        updated_hm = self.get(tenant_id, pool_id)
+        updated_hm.host_header = monitor.get('host_header')
+        updated_hm.path = monitor.get('path')
+        updated_hm.body_regex = monitor.get('body_regex')
+        updated_hm.status_regex = monitor.get('status_regex')
+        updated_hm.delay = monitor.get('delay')
+        updated_hm.timeout = monitor.get('timeout')
+        updated_hm.attempts_before_deactivation = monitor.get(
+            'attempts_before_deactivation')
+        updated_hm.type = monitor.get('type')
+        updated_hm = self.monitor_persistence.monitor.update(updated_hm)
+        return updated_hm
+
+    def delete(self, tenant_id, pool_id):
+        pool = self.pool_persistence.pool.get(tenant_id, pool_id)
+        pool.health_monitor_id = None
+        self.pool_persistence.pool.update(pool)
+        hm = self.get(tenant_id, pool_id)
+        return self.monitor_persistence.monitor.delete(hm)
 
     class HealthMonitorServiceOps(object):
         def __init__(self):

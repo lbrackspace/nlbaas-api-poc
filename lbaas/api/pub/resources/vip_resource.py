@@ -14,16 +14,15 @@ class VIPResource(BaseResource):
         return self._verify_and_form_response_body(member, 'vip',
                                                    remove=_attrs_to_remove)
 
-    def post(self, tenant_id, pool_id):
+    def post(self, tenant_id, vip_id):
         flask.abort(405)
 
-    def put(self, tenant_id, pool_id, member_id):
+    def put(self, tenant_id, vip_id):
         # Object validation, error handling, etc...
         pass
 
-    def delete(self, tenant_id, pool_id, member_id):
-        # Object validation, error handling, etc...
-        pass
+    def delete(self, tenant_id, vip_id):
+        vip_service.VIPService().delete(tenant_id, vip_id)
 
 
 class VIPsResource(BaseResource):

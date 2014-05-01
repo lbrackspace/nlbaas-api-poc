@@ -18,8 +18,7 @@ class MemberResource(BaseResource):
         pass
 
     def delete(self, tenant_id, pool_id, member_id):
-        # Object validation, error handling, etc...
-        pass
+        member_service.MemberService().delete(pool_id, member_id)
 
 
 class MembersResource(BaseResource):

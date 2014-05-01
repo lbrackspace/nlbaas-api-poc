@@ -23,8 +23,10 @@ class VIPRepository(BaseService):
         base.db.session.commit()
         return vip_model
 
-    def delete(self):
-        pass
+    def delete(self, tenant_id, vip_model):
+        base.db.session.delete(vip_model)
+        base.db.session.commit()
+        return vip_model
 
 
 class VipRepositoryOps(object):

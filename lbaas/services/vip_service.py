@@ -29,6 +29,13 @@ class VIPService(BaseService):
         created_vip = self.vip_persistence.vip.create(created_vip)
         return created_vip
 
+    def update(self, tenant_id, vip):
+        flask.abort(405)
+
+    def delete(self, tenant_id, vip_id):
+        vip = self.get(tenant_id, vip_id)
+        return self.vip_persistence.vip.delete(tenant_id, vip)
+
 
 class VIPServiceOps(object):
     def __init__(self):

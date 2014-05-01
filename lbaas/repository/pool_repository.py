@@ -23,8 +23,10 @@ class PoolRepository(BaseService):
         base.db.session.commit()
         return pool_model
 
-    def delete(self):
-        pass
+    def delete(self, tenant_id, pool_model):
+        base.db.session.delete(pool_model)
+        base.db.session.commit()
+        return pool_model
 
 
 class PoolRepositoryOps(object):

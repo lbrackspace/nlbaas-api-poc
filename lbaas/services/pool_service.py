@@ -51,6 +51,19 @@ class PoolService(BaseService):
         created_pool = self.pool_persistence.pool.create(created_pool)
         return created_pool
 
+    def update(self, tenant_id, pool_id, pool):
+        updated_pool = self.pool_persistence.pool.get(tenant_id, pool_id)
+        updated_pool.name = pool.get('name')
+        updated_pool.subnet_id = pool.get('subnet_id')
+        updated_pool.algorithm = pool.get('algorithm')
+        updated_pool.session_persistence = pool.get('session_persistence')
+        updated_pool = self.pool_persistence.pool.create(updated_pool)
+        return updated_pool
+
+    def delete(self, tenant_id, pool_id):
+        pool = self.get(tenant_id, pool_id)
+        return self.pool_persistence.pool.delete(tenant_id, pool)
+
 
 class PoolServiceOps(object):
     def __init__(self):
