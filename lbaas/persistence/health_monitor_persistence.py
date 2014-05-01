@@ -9,19 +9,21 @@ class HealthMonitorPersistence(BaseService):
         monitor_pool = pool.PoolModel.query.filter_by(id_=pool_id).first()
         return monitor_pool.health_monitor
 
-    def create(self, tenant_id, pool_id, json_monitor):
-        monitor = health_monitor.HealthMonitorModel(
-            json_monitor.get('host_header'), json_monitor.get('status_regex'),
-            json_monitor.get('path'), json_monitor.get('body_regex'),
-            json_monitor.get('delay'), json_monitor.get('timeout'),
-            json_monitor.get('attempts'), json_monitor.get('type'))
-        base.db.session.add(monitor)
+    def create(self, monitor):
+        created_monitor = health_monitor.HealthMonitorModel(
+            host_header=monitor.get('host_header'),
+            path=monitor.get('path'),
+            body_regex=monitor.get('body_regex'),
+            status_regex=monitor.get('status_regex'),
+            delay=monitor.get('delay'),
+            timeout=monitor.get('timeout'),
+            attempts=monitor.get('attempts'),
+            type=monitor.get('type'))
+        base.db.session.add(created_monitor)
         base.db.session.commit()
-        return monitor
+        return created_monitor
 
     def update(self, tenant_id, pool_id, json_monitor):
-        monitor = health_monitor.HealthMonitorModel.query(
-            id_=json_monitor.id_).first()
         pass
 
     def delete(self):

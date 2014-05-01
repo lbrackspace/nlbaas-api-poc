@@ -23,7 +23,7 @@ class HealthMonitorModel(base.Base, base.BaseModel):
 
     def __init__(self, type=None, delay=None, timeout=None,
                  attempts_before_deactivation=None, status_regex=None,
-                 body_regex=None, host_header=None, path=path):
+                 body_regex=None, host_header=None, path=None):
         self.type = type
         self.delay = delay
         self.timeout = timeout

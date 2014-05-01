@@ -8,7 +8,7 @@ from lbaas.services \
 class LoadbalancerResource(BaseResource):
     def get(self, tenant_id, lb_id):
         lb = load_balancer_service.LoadbalancerService().get(tenant_id, lb_id)
-        return self._verify_response_body(lb, 'loadbalancer')
+        return self._verify_and_form_response_body(lb, 'loadbalancer')
 
     def put(self, tenant_id, lb_id):
         # Object validation, error handling, etc...
@@ -29,4 +29,4 @@ class LoadbalancersResource(BaseResource):
         json_lb = self.get_request_body(request).get('loadbalancer')
         lb = load_balancer_service\
             .LoadbalancersService().create(tenant_id, json_lb)
-        return lb
+        return self._verify_and_form_response_body(lb, 'loadbalancer')

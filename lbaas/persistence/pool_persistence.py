@@ -13,11 +13,12 @@ class PoolPersistence(BaseService):
         pools = pool.PoolModel.query.filter_by(tenant_id=tenant_id).all()
         return pools
 
-    def create(self):
+    def create(self, tenant_id):
         pass
 
-    def update(self):
-        pass
+    def update(self, tenant_id, pool_id, pool_dict):
+        updated_pool = pool.PoolModel()
+        return updated_pool
 
     def delete(self):
         pass
