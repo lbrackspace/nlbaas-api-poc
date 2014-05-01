@@ -33,9 +33,6 @@ class HealthMonitorModel(base.Base, base.BaseModel):
         self.host_header = host_header
         self.path = path
 
-    def to_dict(self):
-        hm_dict = {'id': self.id_, 'type': self.type}
-        return hm_dict
 
     def __repr__(self):
         return '<HealthMonitor %r>' % self.type

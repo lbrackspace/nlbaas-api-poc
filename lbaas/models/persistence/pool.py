@@ -21,8 +21,7 @@ class PoolModel(base.Base, base.BaseModel):
     id_ = Column('id', Integer, primary_key=True)
     tenant_id = Column(Integer(32))
     health_monitor_id = Column(Integer, ForeignKey('health_monitor.id'))
-    health_monitor = relationship("HealthMonitorModel",
-                                  backref=backref("pool", uselist=False))
+    health_monitor = relationship("HealthMonitorModel")
     ssl_encrypt_id = Column(Integer, ForeignKey('ssl_encrypt.id'))
     ssl_encrypt = relationship("SslEncryptModel",
                                backref=backref("pool", uselist=False))
@@ -30,6 +29,8 @@ class PoolModel(base.Base, base.BaseModel):
     subnet_id = Column(Integer(32))
     algorithm = Column(String(32))
     session_persistence = Column(Integer(32))
+
+    _child_classes = (HealthMonitorModel)
 
     def __init__(self, tenant_id=None, ssl_encrypt=None,
                  health_monitor=None, name=None, subnet_id=False,
@@ -41,10 +42,6 @@ class PoolModel(base.Base, base.BaseModel):
         self.subnet_id = subnet_id
         self.algorithm = algorithm
         self.session_persistence = session_persistence
-
-    def to_dict(self):
-        sp_dict = {'id': self.id_, 'name': self.name}
-        return sp_dict
 
     def __repr__(self):
         return '<Pool %r>' % self.name

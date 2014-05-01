@@ -1,13 +1,13 @@
 from lbaas.models.persistence import base
 from lbaas.models.persistence import health_monitor
+from lbaas.models.persistence import pool
 from lbaas.persistence.base import BaseService
 
 
 class HealthMonitorPersistence(BaseService):
-    def get(self, tenant_id, pool_id):
-        monitor = health_monitor.HealthMonitorModel. \
-            query.filter_by(tenant_id=tenant_id, pool_id=pool_id).first()
-        return monitor
+    def get(self, pool_id):
+        monitor_pool = pool.PoolModel.query.filter_by(id_=pool_id).first()
+        return monitor_pool.health_monitor
 
     def create(self, tenant_id, pool_id, json_monitor):
         monitor = health_monitor.HealthMonitorModel(
