@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
 from lbaas.models.persistence.ssl_decrypt import SslDecryptModel
 from lbaas.models.persistence.pool import PoolModel
+from lbaas.models.persistence.vip import VipModel
 
 from lbaas.models.persistence import base
 
@@ -28,6 +29,8 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     port = Column(String(32))
     protocol = Column(Integer(32))
     status = Column(Integer(32))
+
+    _child_classes = (PoolModel, SslDecryptModel, VipModel)
 
     def __init__(self, tenant_id=None, pool=None, ssl_decrypt=None, vips=None,
                  name=None, content_switching=False, port=None,

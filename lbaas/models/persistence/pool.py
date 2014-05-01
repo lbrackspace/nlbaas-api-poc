@@ -33,11 +33,11 @@ class PoolModel(base.Base, base.BaseModel):
     _child_classes = (HealthMonitorModel)
 
     def __init__(self, tenant_id=None, ssl_encrypt=None,
-                 health_monitor=None, name=None, subnet_id=False,
+                 health_monitor_id=None, name=None, subnet_id=False,
                  algorithm=None, session_persistence=None):
         self.tenant_id = tenant_id
         self.ssl_encrypt = ssl_encrypt
-        self.health_monitor = health_monitor
+        self.health_monitor_id = health_monitor_id
         self.name = name
         self.subnet_id = subnet_id
         self.algorithm = algorithm

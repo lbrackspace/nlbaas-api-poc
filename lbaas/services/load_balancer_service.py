@@ -24,7 +24,8 @@ class LoadbalancersService(BaseService):
                                             subnet_id=v.get('subnet_id'),
                                             type=v.get('type')))
         lb_in = load_balancer.LoadbalancerModel(tenant_id, vips=vips_in)
-        self.lb_persistence.loadbalancer.create(lb_in)
+        lb = self.lb_persistence.loadbalancer.create(lb_in)
+        return lb
 
 class LoadbalancerService(BaseService):
 
