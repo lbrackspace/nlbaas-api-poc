@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Table, \
     Boolean
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.associationproxy import association_proxy
 from lbaas.models.persistence.ssl_decrypt import SslDecryptModel
 from lbaas.models.persistence.pool import PoolModel
 
@@ -18,28 +19,39 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     pool_id = Column(Integer, ForeignKey('pool.id'))
     pool = relationship("PoolModel")
     ssl_decrypt_id = Column(Integer, ForeignKey('ssl_decrypt.id'))
-    ssl_decrypt = relationship("SslDecryptModel",backref=backref("load_balancer", uselist=False))
+    ssl_decrypt = relationship("SslDecryptModel",
+                               backref=backref("load_balancer", uselist=False))
+    vips = relationship("VipModel", secondary=lambda: lb_vip_table)
+    vips_ass = association_proxy('vips', 'vip')
     name = Column(String(128))
     content_switching = Column(Boolean(128))
     port = Column(String(32))
     protocol = Column(Integer(32))
     status = Column(Integer(32))
 
-    def __init__(self, tenant_id=None, pool=None, ssl_decrypt=None, name=None,
-                 content_switching=False, port=None, protocol=None,
-                 status=None):
+    def __init__(self, tenant_id=None, pool=None, ssl_decrypt=None, vips=None,
+                 name=None, content_switching=False, port=None,
+                 protocol=None, status=None):
         self.tenant_id = tenant_id
         self.pool = pool
         self.ssl_decrypt = ssl_decrypt
+        self.vips = vips
         self.name = name
         self.content_switching = content_switching
         self.port = port
         self.protocol = protocol
         self.status = status
 
-    def to_dict(self):
-        lb_dict = {'id': self.id_, 'name': self.name}
-        return lb_dict
+    #def to_dict(self):
+    #    lb_dict = {'id': self.id_, 'name': self.name}
+    #    return lb_dict
 
     def __repr__(self):
         return '<LB %r>' % self.name
+
+lb_vip_table = Table('lb_vip', base.Base.metadata,
+    Column('lb_id', Integer, ForeignKey("load_balancer.id"),
+           primary_key=True),
+    Column('vip_id', Integer, ForeignKey("vip.id"),
+           primary_key=True)
+)

@@ -12,6 +12,7 @@ from lbaas.persistence.member_persistence import MemberPersistenceOps
 class BaseService(Resource):
     def __init__(self):
         #Init persistence classes here ex:
+        ##naming and links looks odd, figure how to chain differently
         self.lb_persistence = LoadbalancerPersistenceOps()
         self.monitor_persistence = HealthMonitorPersistenceOps()
         self.pool_persistence = PoolPersistenceOps()

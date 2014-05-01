@@ -16,7 +16,7 @@ class SslSniEncryptPolicy(base.Base, base.BaseModel):
     id_ = Column('id', Integer, primary_key=True)
     enabled = Column(Boolean())
     sni_match = Column(String(128))
-    ssl_encrypt_id = Column(Integer, ForeignKey('ssl_decrypt.id'))
+    ssl_encrypt_id = Column(Integer, ForeignKey('ssl_encrypt.id'))
     ssl_encrypt = relationship("SslEncryptModel", backref=backref("ssl_sni_encrypt_policy", uselist=False))
     tls_certificate_id = Column(Integer, ForeignKey('tls_certificate.id'))
     tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_sni_encrypt_policy"))

@@ -10,30 +10,21 @@ class LoadbalancerResource(BaseResource):
         lb = load_balancer_service.LoadbalancerService().get(tenant_id, lb_id)
         return self._verify_response_body(lb, 'loadbalancer')
 
-    def post(self, account_id):
-        pass
-
-    def put(self, account_id, lb_id):
+    def put(self, tenant_id, lb_id):
         # Object validation, error handling, etc...
         pass
 
-    def delete(self, accound_id, lb_id):
+    def delete(self, tenant_id, lb_id):
         # Object validation, error handling, etc...
         pass
 
 
 class LoadbalancersResource(BaseResource):
     def get(self, tenant_id):
-        lbs = load_balancer_service.LoadbalancerService().get_all(tenant_id)
-        return self._verify_and_form_response_body(lbs, 'loadbalancers')
+        lbs = load_balancer_service.LoadbalancersService().get_all(tenant_id)
+        return lbs
+        #return self._verify_and_form_response_body(lbs, 'loadbalancers')
 
-    def post(self, account_id):
-        pass
-
-    def put(self, account_id, lb_id):
-        # Object validation, error handling, etc...
-        pass
-
-    def delete(self, accound_id, lb_id):
-        # Object validation, error handling, etc...
-        pass
+    def post(self, tenant_id):
+        json_lb = self.get_request_body(request).get('loadbalancer')
+        load_balancer_service.LoadbalancersService().create(tenant_id, json_lb)

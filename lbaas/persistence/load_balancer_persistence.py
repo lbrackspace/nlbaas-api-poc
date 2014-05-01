@@ -14,7 +14,12 @@ class LoadbalancerPersistence(BaseService):
             .query.filter_by(tenant_id=tenant_id).all()
         return lbs
 
-    def create(self):
+    def create(self, in_lb):
+        ##Error checking etc..
+        #defaults for poc...
+        base.db.session.add(in_lb)
+        base.db.session.flush()
+        base.db.session.commit()
         pass
 
     def update(self):
