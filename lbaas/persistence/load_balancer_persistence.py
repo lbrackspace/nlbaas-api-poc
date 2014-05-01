@@ -20,7 +20,6 @@ class LoadbalancerPersistence(BaseService):
         base.db.session.add(in_lb)
         base.db.session.flush()
         base.db.session.commit()
-        pass
 
     def update(self):
         pass

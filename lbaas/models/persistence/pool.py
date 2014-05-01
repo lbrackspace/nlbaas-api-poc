@@ -10,6 +10,7 @@ from sqlalchemy.orm import relationship
 from lbaas.models.persistence import base
 from lbaas.models.persistence.health_monitor import HealthMonitorModel
 from lbaas.models.persistence.ssl_encrypt import SslEncryptModel
+from lbaas.models.persistence.member import MemberModel
 
 
 class PoolModel(base.Base, base.BaseModel):
@@ -29,12 +30,13 @@ class PoolModel(base.Base, base.BaseModel):
     subnet_id = Column(Integer(32))
     algorithm = Column(String(32))
     session_persistence = Column(Integer(32))
+    members = relationship("MemberModel", backref=backref("pool"))
 
     _child_classes = (HealthMonitorModel)
 
     def __init__(self, tenant_id=None, ssl_encrypt=None,
                  health_monitor=None, name=None, subnet_id=False,
-                 algorithm=None, session_persistence=None):
+                 algorithm=None, session_persistence=None, members=None):
         self.tenant_id = tenant_id
         self.ssl_encrypt = ssl_encrypt
         self.health_monitor = health_monitor
@@ -42,6 +44,7 @@ class PoolModel(base.Base, base.BaseModel):
         self.subnet_id = subnet_id
         self.algorithm = algorithm
         self.session_persistence = session_persistence
+        self.members = members
 
     def __repr__(self):
         return '<Pool %r>' % self.name

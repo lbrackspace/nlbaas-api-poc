@@ -13,16 +13,15 @@ class MemberModel(base.Base, base.BaseModel):
 
     id_ = Column('id', Integer, primary_key=True)
     pool_id = Column(Integer, ForeignKey('pool.id'))
-    pool = relationship("PoolModel", backref=backref("member", uselist=False))
     ip = Column(String(128))
     port = Column(Integer(32))
     weight = Column(Integer(32))
     status = Column(String(32))
     condition = Column(String(32))
 
-    def __init__(self, pool=None, ip=None, port=None, weight=None,
+    def __init__(self, pool_id=None, ip=None, port=None, weight=None,
                  status=None, condition=None):
-        self.pool = pool
+        self.pool_id = pool_id
         self.ip = ip
         self.port = port
         self.weight = weight
