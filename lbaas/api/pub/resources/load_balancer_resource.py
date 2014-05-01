@@ -22,9 +22,11 @@ class LoadbalancerResource(BaseResource):
 class LoadbalancersResource(BaseResource):
     def get(self, tenant_id):
         lbs = load_balancer_service.LoadbalancersService().get_all(tenant_id)
-        return lbs
-        #return self._verify_and_form_response_body(lbs, 'loadbalancers')
+        #return lbs
+        return self._verify_and_form_response_body(lbs, 'loadbalancers')
 
     def post(self, tenant_id):
         json_lb = self.get_request_body(request).get('loadbalancer')
-        load_balancer_service.LoadbalancersService().create(tenant_id, json_lb)
+        lb = load_balancer_service\
+            .LoadbalancersService().create(tenant_id, json_lb)
+        return lb
