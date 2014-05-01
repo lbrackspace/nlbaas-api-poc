@@ -18,7 +18,7 @@ class SslDecryptModel(base.Base, base.BaseModel):
     tenant_id = Column(Integer(32))
     enabled = Column(Boolean())
     tls_certificate_id = Column(Integer, ForeignKey('tls_certificate.id'))
-    tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_decrypt", uselist=False))
+    tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_decrypt"))
 
     def __init__(self, tenant_id=None, enabled=False,
                  tls_certificate=None):

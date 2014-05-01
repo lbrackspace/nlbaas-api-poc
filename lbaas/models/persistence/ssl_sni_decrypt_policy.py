@@ -19,7 +19,7 @@ class SslSniDecryptPolicy(base.Base, base.BaseModel):
     ssl_decrypt_id = Column(Integer, ForeignKey('ssl_decrypt.id'))
     ssl_decrypt = relationship("SslDecryptModel", backref=backref("ssl_sni_decrypt_policy", uselist=False))
     tls_certificate_id = Column(Integer, ForeignKey('tls_certificate.id'))
-    tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_sni_decrypt_policy", uselist=False))
+    tls_certificate = relationship("TlsCertificateModel", backref=backref("ssl_sni_decrypt_policy"))
 
     def __init__(self, tenant_id=None, enabled=False, sni_match=None,
                  ssl_decrypt=None, tls_certificate=None):
