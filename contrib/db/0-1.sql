@@ -106,6 +106,7 @@ CREATE TABLE `vip` (
     `tenant_id` varchar(128) DEFAULT NULL,
     `subnet_id` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
+    `address` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_v_type` FOREIGN KEY (`type`) REFERENCES enum_vip_type(name)
 ) ENGINE=InnoDB;

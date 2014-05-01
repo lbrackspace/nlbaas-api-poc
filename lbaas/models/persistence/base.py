@@ -55,6 +55,6 @@ class BaseModel(object):
 
             elif isinstance(attr, recurse_classes):
                 ret = attr.to_dict()
-            else:
+            elif not isinstance(attr, BaseModel):
                 ret = attr
         return ret

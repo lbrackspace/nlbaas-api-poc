@@ -65,9 +65,10 @@ class LoadbalancersService(BaseService):
                 for p in pools_json:
                     pools_in.append(
                         self.compile_pool_model_from_json(tenant_id, p))
-            cs_in = lb_l7_policy.LbL7PolicyModel(pools=pools_in, lb,
-                                                 condition=cs_json.get('match'),
-                                                 type=cs_json.get('type'))
+            cs_in = lb_l7_policy.LbL7PolicyModel(
+                pools=pools_in, load_balancer=lb,
+                condition=cs_json.get('match'),
+                type=cs_json.get('type'))
         return lb
 
     def compile_pool_model_from_json(self, tenant_id, pool_json):

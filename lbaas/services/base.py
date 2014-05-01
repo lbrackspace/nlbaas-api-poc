@@ -7,6 +7,7 @@ from lbaas.repository.load_balancer_repository \
 import LoadbalancerRepositoryOps
 from lbaas.repository.pool_repository import PoolRepositoryOps
 from lbaas.repository.member_repository import MemberRepositoryOps
+from lbaas.repository.vip_repository import VipRepositoryOps
 
 
 class BaseService(Resource):
@@ -17,6 +18,7 @@ class BaseService(Resource):
         self.monitor_persistence = HealthMonitorRepositoryOps()
         self.pool_persistence = PoolRepositoryOps()
         self.member_persistence = MemberRepositoryOps()
+        self.vip_persistence = VipRepositoryOps()
 
     def validate_resources(self):
         resources = request.view_args.copy()
@@ -26,7 +28,7 @@ class BaseService(Resource):
 
     def _validate_all_resources_exist(self, tenant_id=None, lb_id=None,
                                       pool_id=None, member_id=None,
-                                      health_monitor=False):
+                                      health_monitor=False, vip_id=None):
         resources = []
 
         if pool_id is not None:
@@ -41,6 +43,9 @@ class BaseService(Resource):
         if lb_id is not None:
             resources.append(self.lb_persistence.loadbalancer.get(tenant_id,
                                                                   lb_id))
+        if vip_id is not None:
+            resources.append(self.vip_persistence.vip.get(tenant_id,
+                                                          vip_id))
 
         for resource in resources:
             if resource is None:

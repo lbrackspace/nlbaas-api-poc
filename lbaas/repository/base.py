@@ -1,5 +1,5 @@
 from lbaas.models.persistence import base, load_balancer, health_monitor, \
-    pool, member
+    pool, member, vip
 
 
 class BaseService(object):
@@ -11,3 +11,4 @@ class BaseService(object):
             base.db.session.query_property()
         pool.PoolModel.query = base.db.session.query_property()
         member.MemberModel.query = base.db.session.query_property()
+        vip.VipModel.query = base.db.session.query_property()
