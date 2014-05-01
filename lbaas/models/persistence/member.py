@@ -13,24 +13,21 @@ class MemberModel(base.Base, base.BaseModel):
 
     id_ = Column('id', Integer, primary_key=True)
     pool_id = Column(Integer, ForeignKey('pool.id'))
+    pool = relationship("PoolModel")
     ip = Column(String(128))
     port = Column(Integer(32))
     weight = Column(Integer(32))
     status = Column(String(32))
     condition = Column(String(32))
 
-    def __init__(self, pool_id=None, ip=None, port=None, weight=None,
+    def __init__(self, pool=None, ip=None, port=None, weight=None,
                  status=None, condition=None):
-        self.pool_id = pool_id
+        self.pool = pool
         self.ip = ip
         self.port = port
         self.weight = weight
         self.status = status
         self.condition = condition
-
-    def to_dict(self):
-        m_dict = {'id': self.id_, 'ip': self.ip}
-        return m_dict
 
     def __repr__(self):
         return '<Member %r>' % self.ip

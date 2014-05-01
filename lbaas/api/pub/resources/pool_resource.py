@@ -27,7 +27,10 @@ class PoolsResource(BaseResource):
         return self._verify_and_form_response_body(pools, 'pools')
 
     def post(self, tenant_id):
-        pass
+        pool = self.get_request_body(request)
+        pool = pool.get('pool')
+        created_pool = pool_service.PoolService().create(tenant_id, pool)
+        return self._verify_and_form_response_body(created_pool, 'pool')
 
     def put(self, tenant_id, pool_id):
         # Object validation, error handling, etc...

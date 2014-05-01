@@ -15,7 +15,7 @@ class HealthMonitorService(BaseService):
         monitor = self.monitor_persistence.monitor.create(
             tenant_id, health_monitor)
         self.pool_persistence.pool.update(
-            tenant_id, pool_id, {'pool': {'health_monitor_id': monitor.id_}})
+            tenant_id, pool_id, {'health_monitor': monitor})
         return monitor
 
     class HealthMonitorServiceOps(object):

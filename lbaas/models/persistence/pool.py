@@ -30,9 +30,9 @@ class PoolModel(base.Base, base.BaseModel):
     subnet_id = Column(Integer(32))
     algorithm = Column(String(32))
     session_persistence = Column(Integer(32))
-    members = relationship("MemberModel", backref=backref("pool"))
+    members = relationship("MemberModel")
 
-    _child_classes = (HealthMonitorModel)
+    _child_classes = (HealthMonitorModel, MemberModel)
 
     def __init__(self, tenant_id=None, ssl_encrypt=None,
                  health_monitor=None, name=None, subnet_id=False,
