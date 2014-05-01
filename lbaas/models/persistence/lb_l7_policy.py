@@ -16,14 +16,14 @@ class LbL7PolicyModel(base.Base, base.BaseModel):
     load_balancer = relationship("LoadbalancerModel", backref=backref("lb_l7_policy", uselist=False))
     pool_id = Column(Integer, ForeignKey('pool.id'))
     pool = relationship("PoolModel", backref=backref("lb_l7_policy"))
+    condition = Column(String(32))
+    type = Column(String(32))
 
-    def __init__(self, load_balancer=None, vip=None):
+    def __init__(self, load_balancer=None, pool=None, condition=None, type=None):
         self.load_balancer = load_balancer
-        self.vip = vip
-
-    def to_dict(self):
-        l7_dict = {'lb_id': self.lb_id, 'pool_id': self.vip_id}
-        return l7_dict
+        self.pool = pool
+        self.condition = condition
+        self.type = type
 
     def __repr__(self):
-        return '<Lbl7Policy %r>' % self.name
+        return '<Lbl7Policy %r>' % self.type
