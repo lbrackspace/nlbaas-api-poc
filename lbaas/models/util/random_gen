@@ -1,0 +1,14 @@
+import random
+
+
+class GenerateRandomIp():
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def gen_ipv4():
+        octet1 = random.randint(1, 254)
+        octet2 = random.randint(1, 254)
+        octet3 = random.randint(1, 254)
+        octet4 = random.randint(1, 254)
+        return '{0}.{1}.{2}.{3}'.format(octet1, octet2, octet3, octet4)

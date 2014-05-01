@@ -1,3 +1,6 @@
+import random
+from lbaas.models.util.mappings.model_mapper import JsonToDomainModelMapper
+from lbaas.models.util.random_gen import GenerateRandomIp
 from lbaas.services.base import BaseService
 from lbaas.models.persistence import load_balancer, pool, \
     lb_l7_policy, vip, member, ssl_encrypt, ssl_decrypt, \
@@ -23,13 +26,15 @@ class LoadbalancersService(BaseService):
             for v in vips_json:
                 vips_in.append(vip.VipModel(tenant_id=tenant_id,
                                             subnet_id=v.get('subnet_id'),
-                                            type=v.get('type')))
+                                            type=v.get('type'),
+                                            address=GenerateRandomIp.gen_ipv4()))
 
         ##Pool
         pool_in = ""
         if 'pool' in json_lb:
             pool_json = json_lb.get('pool')
-            pool_in = self.compile_pool_model_from_json(tenant_id, pool_json)
+            pool_in = JsonToDomainModelMapper.compile_pool_model_from_json(
+                tenant_id, pool_json)
 
 
         ##Ssl Decrypt
@@ -64,58 +69,13 @@ class LoadbalancersService(BaseService):
                 pools_json = cs_json.get('pools')
                 for p in pools_json:
                     pools_in.append(
-                        self.compile_pool_model_from_json(tenant_id, p))
+                        JsonToDomainModelMapper.compile_pool_model_from_json(
+                            tenant_id, p))
             cs_in = lb_l7_policy.LbL7PolicyModel(
                 pools=pools_in, load_balancer=lb,
                 condition=cs_json.get('match'),
                 type=cs_json.get('type'))
         return lb
-
-    def compile_pool_model_from_json(self, tenant_id, pool_json):
-        if 'pool_id' in pool_json:
-            return self.pool_persistence.pool.get(tenant_id,
-                                                  pool_json.get('pool_id'))
-        members_json = pool_json.get('members')
-        members_in = []
-        if members_json is not None:
-            for m in members_json:
-                members_in.append(member.MemberModel(
-                    ip=m.get('ip'),
-                    port=m.get('port'),
-                    weight=m.get('weight'),
-                    condition=m.get('condition')))
-
-        healthmonitor_in = ""
-        if "health_monitor" in pool_json:
-            hm_json = pool_json.get('health_monitor')
-            healthmonitor_in = health_monitor.HealthMonitorModel(
-                type=hm_json.get('type'),
-                delay=hm_json.get('delay'),
-                timeout=hm_json.get('timeout'),
-                attempts_before_deactivation=hm_json.get(
-                    'attempts_before_deactivation'),
-                status_regex=hm_json.get('timeout'),
-                body_regex=hm_json.get('body_regex'),
-                host_header=hm_json.get('host_header'),
-                path=hm_json.get('path'))
-
-        sslen_in = ""
-        if 'ssl_encrypt' in pool_json:
-            sslencrypt_json = pool_json.get('ssl_encrypt')
-            sslen_in = ssl_encrypt.SslEncryptModel(
-                tenant_id=tenant_id,
-                enabled=sslencrypt_json.get('enabled'),
-                tls_certificate_id=sslencrypt_json.get('tls_cerificate_id'))
-
-        return pool.PoolModel(tenant_id=tenant_id,
-                              ssl_encrypt=sslen_in,
-                              health_monitor=healthmonitor_in,
-                              name=pool_json.get('name'),
-                              subnet_id=pool_json.get('subnet_id'),
-                              algorithm=pool_json.get('algorithm'),
-                              session_persistence=pool_json.get(
-                                  'session_persistence'),
-                              members=members_in)
 
 
 class LoadbalancerService(BaseService):
