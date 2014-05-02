@@ -5,7 +5,7 @@ from flask import request
 from lbaas.services import pool_service
 
 
-_attrs_to_remove = ('content_switching_id', 'health_monitor_id', 'tenant_id')
+_attrs_to_remove = ('content_switching_id', 'health_monitor_id')
 
 
 class PoolResource(BaseResource):
@@ -18,8 +18,11 @@ class PoolResource(BaseResource):
         flask.abort(405)
 
     def put(self, tenant_id, pool_id):
-        # Object validation, error handling, etc...
-        pass
+        pool_dict = self.get_request_body(request)
+        pool_dict = pool_dict.get('pool')
+        pool = pool_service.PoolService().update(tenant_id, pool_id, pool_dict)
+        return self._verify_and_form_response_body(pool, 'pool',
+                                                   remove=_attrs_to_remove)
 
     def delete(self, tenant_id, pool_id):
         pool_service.PoolService().delete(tenant_id, pool_id)

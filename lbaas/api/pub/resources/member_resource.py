@@ -14,8 +14,11 @@ class MemberResource(BaseResource):
         flask.abort(405)
 
     def put(self, tenant_id, pool_id, member_id):
-        # Object validation, error handling, etc...
-        pass
+        member_json = self.get_request_body(request)
+        member_json = member_json.get('member')
+        member = member_service.MemberService().update(pool_id, member_id,
+                                                       member_json)
+        return self._verify_and_form_response_body(member, 'member')
 
     def delete(self, tenant_id, pool_id, member_id):
         member_service.MemberService().delete(pool_id, member_id)
@@ -27,7 +30,10 @@ class MembersResource(BaseResource):
         return self._verify_and_form_response_body(members, 'members')
 
     def post(self, tenant_id, pool_id):
-        pass
+        member = self.get_request_body(request)
+        member = member.get('member')
+        created_member = member_service.MemberService().create(pool_id, member)
+        return self._verify_and_form_response_body(created_member, 'member')
 
     def put(self, tenant_id, pool_id, member_id):
         flask.abort(405)

@@ -5,7 +5,7 @@ from flask import request
 from lbaas.services import vip_service
 
 
-_attrs_to_remove = ('tenant_id')
+_attrs_to_remove = ()
 
 
 class VIPResource(BaseResource):
@@ -18,8 +18,7 @@ class VIPResource(BaseResource):
         flask.abort(405)
 
     def put(self, tenant_id, vip_id):
-        # Object validation, error handling, etc...
-        pass
+        flask.abort(405)
 
     def delete(self, tenant_id, vip_id):
         vip_service.VIPService().delete(tenant_id, vip_id)
