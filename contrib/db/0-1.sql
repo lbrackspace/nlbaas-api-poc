@@ -147,8 +147,8 @@ CREATE TABLE `content_switching` (
     `match` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_l7_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name),
-    CONSTRAINT `fk_l7_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id)
+    CONSTRAINT `fk_cs_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name),
+    CONSTRAINT `fk_cs_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `enum_lbaas_protocol`;
