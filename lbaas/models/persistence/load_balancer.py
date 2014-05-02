@@ -26,7 +26,6 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     vips = relationship("VipModel", secondary=lambda: lb_vip_table)
     vips_ass = association_proxy('vips', 'vip')
     name = Column(String(128))
-    content_switching = Column(Boolean(128))
     port = Column(String(32))
     protocol = Column(Integer(32))
     status = Column(Integer(32))
@@ -36,14 +35,13 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     _child_classes = (PoolModel, SslDecryptModel, VipModel, LbL7PolicyModel)
 
     def __init__(self, tenant_id=None, pool=None, ssl_decrypt=None, vips=None,
-                 name=None, content_switching=False, port=None,
-                 protocol=None, status=None, lb_l7_policy=None):
+                 name=None, port=None, protocol=None, status=None,
+                 lb_l7_policy=None):
         self.tenant_id = tenant_id
         self.pool = pool
         self.ssl_decrypt = ssl_decrypt
         self.vips = vips
         self.name = name
-        self.content_switching = content_switching
         self.port = port
         self.protocol = protocol
         self.status = status

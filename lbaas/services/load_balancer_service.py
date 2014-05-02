@@ -57,16 +57,18 @@ class LoadbalancerService(BaseService):
         ssld_in = None
         if 'ssl_decrypt' in json_lb:
             ssld_json = json_lb.get('ssl_decrypt')
+
             ssld_in = ssl_decrypt.SslDecryptModel(
                 tenant_id=tenant_id,
                 enabled=ssld_json.get('enabled'),
-                tls_certificate_id=ssld_json.get('tls_cerificate_id'))
+                ##Update for certs/sni
+                tls_certificate=None)
 
 
         ##Content switching handled outside of load balancer create for now...
         ###WIP
         cs_in = None
-        if 'content-switching' in json_lb:
+        if 'content_switching' in json_lb:
             cs_json = json_lb.get('content-switching')
             pools_in = []
             if 'pools' in cs_json:
@@ -77,14 +79,13 @@ class LoadbalancerService(BaseService):
                             tenant_id, p))
             cs_in = lb_l7_policy.LbL7PolicyModel(
                 pools=pools_in,
-                condition=cs_json.get('match'),
-                type=cs_json.get('type'))
+                enabled=cs_json.get('rule').get('enabled'),
+                condition=cs_json.get('rule').get('match'),
+                type=cs_json.get('rule').get('type'))
 
         lb_in = load_balancer.LoadbalancerModel(tenant_id,
                                                 vips=vips_in,
                                                 name=json_lb.get('name'),
-                                                content_switching=json_lb.get(
-                                                    'content-swithcing'),
                                                 port=json_lb.get('port'),
                                                 protocol=json_lb.get(
                                                     'protocol'),

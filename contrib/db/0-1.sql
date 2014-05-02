@@ -142,6 +142,7 @@ CREATE TABLE `lb_vip` (
 DROP TABLE IF EXISTS `lb_l7_policy`;
 CREATE TABLE `lb_l7_policy` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
+    `enabled` int(1) NOT NULL,
     `lb_id` int(11) NOT NULL,
     `pool_id` int(11) DEFAULT NULL,
     `condition` varchar(32) DEFAULT NULL,

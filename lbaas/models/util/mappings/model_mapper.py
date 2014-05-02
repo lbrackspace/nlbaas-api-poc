@@ -41,7 +41,8 @@ class JsonToDomainModelMapper():
                 sslen_in = ssl_encrypt.SslEncryptModel(
                     tenant_id=tenant_id,
                     enabled=sslencrypt_json.get('enabled'),
-                    tls_certificate_id=sslencrypt_json.get('tls_cerificate_id'))
+                    ##Update for certs/sni
+                    tls_certificate=None)
 
             return pool.PoolModel(tenant_id=tenant_id,
                                   ssl_encrypt=sslen_in,

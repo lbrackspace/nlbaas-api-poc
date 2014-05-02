@@ -13,6 +13,7 @@ class LbL7PolicyModel(base.Base, base.BaseModel):
     TAG = 'lb_l7_policy'
 
     id_ = Column('id', Integer, primary_key=True)
+    enabled = Column(Boolean(128))
     lb_id = Column(Integer, ForeignKey('load_balancer.id'))
     pools = relationship("PoolModel")
     condition = Column(String(32))
@@ -20,7 +21,9 @@ class LbL7PolicyModel(base.Base, base.BaseModel):
 
     _child_classes = (PoolModel)
 
-    def __init__(self, lb_id=None, pools=[], condition=None, type=None):
+    def __init__(self, enabled=False, lb_id=None, pools=[], condition=None,
+                 type=None):
+        self.enabled = enabled
         self.lb_id = lb_id
         self.pools = pools
         self.condition = condition
