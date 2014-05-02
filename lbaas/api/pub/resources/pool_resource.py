@@ -5,7 +5,7 @@ from flask import request
 from lbaas.services import pool_service
 
 
-_attrs_to_remove = ('lb_l7_policy', 'health_monitor_id', 'tenant_id')
+_attrs_to_remove = ('content_switching_id', 'health_monitor_id', 'tenant_id')
 
 
 class PoolResource(BaseResource):
