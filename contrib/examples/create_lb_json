@@ -1,0 +1,32 @@
+{
+    "loadbalancer": {
+        "name": "Single Call LB",
+        "port": 80,
+        "protocol": "HTTP",
+        "vips": [
+            {
+                "type": "IPv4",
+                "subnet_id": "SUBNET_UUID"
+            }
+        ],
+        "pool": {
+            "name": "pooltest1",
+            "subnet_id": "SUBNET_UUID",
+            "algorithm": "ROUNDROBIN",
+            "session_persistence": "HTTP_COOKIE",
+            "members": [
+                {
+                    "ip": "10.1.1.1",
+                    "port": 80,
+                    "enabled": "true"
+                }
+            ],
+            "health_monitor": {
+                "type": "HTTP",
+                "delay": 1,
+                "timeout": 10,
+                "interval": 1
+            }
+        }
+    }
+}

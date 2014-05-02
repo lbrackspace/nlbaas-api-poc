@@ -21,7 +21,7 @@ class JsonToDomainModelMapper():
                         weight=m.get('weight'),
                         condition=m.get('condition')))
 
-            healthmonitor_in = ""
+            healthmonitor_in = None
             if "health_monitor" in pool_json:
                 hm_json = pool_json.get('health_monitor')
                 healthmonitor_in = health_monitor.HealthMonitorModel(
@@ -35,7 +35,7 @@ class JsonToDomainModelMapper():
                     host_header=hm_json.get('host_header'),
                     path=hm_json.get('path'))
 
-            sslen_in = ""
+            sslen_in = None
             if 'ssl_encrypt' in pool_json:
                 sslencrypt_json = pool_json.get('ssl_encrypt')
                 sslen_in = ssl_encrypt.SslEncryptModel(

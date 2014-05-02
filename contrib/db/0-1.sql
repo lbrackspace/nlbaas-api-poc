@@ -215,6 +215,9 @@ CREATE TABLE `enum_pool_session_persistence` (
     PRIMARY KEY (`name`)
 ) ENGINE=InnoDB;
 
+INSERT INTO `enum_pool_session_persistence` VALUES('HTTP', 'HTTP');
+INSERT INTO `enum_pool_session_persistence` VALUES('HTTP_COOKIE', 'COOKIE');
+
 INSERT INTO `enum_rule_type` VALUES('PATH', 'Path');
 
 INSERT INTO `enum_health_monitor_type` VALUES('HTTP', 'Http');
