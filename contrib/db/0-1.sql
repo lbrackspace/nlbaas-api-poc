@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS `pool`;
 CREATE TABLE `pool` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `health_monitor_id` int(11) DEFAULT NULL,
+    `lb_l7_policy_id` int(11) DEFAULT NULL,
     `tenant_id` varchar(128) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
     `subnet_id` varchar(128) DEFAULT NULL,
@@ -31,7 +32,8 @@ CREATE TABLE `pool` (
     CONSTRAINT `fk_p_sp` FOREIGN KEY (`session_persistence`) REFERENCES enum_pool_session_persistence(name),
     CONSTRAINT `fk_p_algo` FOREIGN KEY (`algorithm`) REFERENCES enum_pool_algorithm(name),
     CONSTRAINT `fk_p_ssl_encrypt` FOREIGN KEY (`ssl_encrypt_id`) REFERENCES ssl_encrypt(id),
-    CONSTRAINT `fk_p_hm_id` FOREIGN KEY (`health_monitor_id`) REFERENCES health_monitor(id)
+    CONSTRAINT `fk_p_hm_id` FOREIGN KEY (`health_monitor_id`) REFERENCES health_monitor(id),
+    CONSTRAINT `fk_p_l7_id` FOREIGN KEY (`lb_l7_policy_id`) REFERENCES lb_l7_policy(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `health_monitor`;

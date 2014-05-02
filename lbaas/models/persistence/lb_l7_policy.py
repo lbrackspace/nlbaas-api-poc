@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, backref
 
 from lbaas.models.persistence import base
 
+from lbaas.models.persistence.pool import PoolModel
 
 class LbL7PolicyModel(base.Base, base.BaseModel):
     __tablename__ = 'lb_l7_policy'
@@ -13,15 +14,15 @@ class LbL7PolicyModel(base.Base, base.BaseModel):
 
     id_ = Column('id', Integer, primary_key=True)
     lb_id = Column(Integer, ForeignKey('load_balancer.id'))
-    load_balancer = relationship("LoadbalancerModel", backref=backref("lb_l7_policy", uselist=False))
-    pool_id = Column(Integer, ForeignKey('pool.id'))
-    pool = relationship("PoolModel", backref=backref("lb_l7_policy"))
+    pools = relationship("PoolModel")
     condition = Column(String(32))
     type = Column(String(32))
 
-    def __init__(self, load_balancer=None, pool=None, condition=None, type=None):
-        self.load_balancer = load_balancer
-        self.pool = pool
+    _child_classes = (PoolModel)
+
+    def __init__(self, lb_id=None, pools=[], condition=None, type=None):
+        self.lb_id = lb_id
+        self.pools = pools
         self.condition = condition
         self.type = type
 
