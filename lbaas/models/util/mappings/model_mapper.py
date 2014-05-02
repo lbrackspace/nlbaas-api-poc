@@ -1,5 +1,5 @@
 from lbaas.models.persistence import load_balancer, pool, \
-    lb_l7_policy, vip, member, ssl_encrypt, ssl_decrypt, \
+    content_switching, vip, member, ssl_encrypt, ssl_decrypt, \
     ssl_sni_decrypt_policy, ssl_sni_encrypt_policy, health_monitor
 
 

@@ -31,14 +31,15 @@ class PoolModel(base.Base, base.BaseModel):
     algorithm = Column(String(32))
     session_persistence = Column(Integer(32))
     members = relationship("MemberModel")
-    lb_l7_policy_id = Column(Integer, ForeignKey('lb_l7_policy.id'))
+    content_switching_id = Column(Integer, ForeignKey(
+        'content_switching.id'))
 
     _child_classes = (HealthMonitorModel, MemberModel, SslEncryptModel)
 
     def __init__(self, tenant_id=None, ssl_encrypt=None,
                  health_monitor=None, name=None, subnet_id=None,
                  algorithm=None, session_persistence=None, members=[],
-                 lb_l7_policy_id=None):
+                 content_switching_id=None):
         self.tenant_id = tenant_id
         self.ssl_encrypt = ssl_encrypt
         self.health_monitor = health_monitor
@@ -47,7 +48,7 @@ class PoolModel(base.Base, base.BaseModel):
         self.algorithm = algorithm
         self.session_persistence = session_persistence
         self.members = members
-        self.lb_l7_policy_id = lb_l7_policy_id
+        self.content_switching_id = content_switching_id
 
     def __repr__(self):
         return '<Pool %r>' % self.name

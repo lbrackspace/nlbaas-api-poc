@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS `pool`;
 CREATE TABLE `pool` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `health_monitor_id` int(11) DEFAULT NULL,
-    `lb_l7_policy_id` int(11) DEFAULT NULL,
+    `content_switching_id` int(11) DEFAULT NULL,
     `tenant_id` varchar(128) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
     `subnet_id` varchar(128) DEFAULT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `pool` (
     CONSTRAINT `fk_p_algo` FOREIGN KEY (`algorithm`) REFERENCES enum_pool_algorithm(name),
     CONSTRAINT `fk_p_ssl_encrypt` FOREIGN KEY (`ssl_encrypt_id`) REFERENCES ssl_encrypt(id),
     CONSTRAINT `fk_p_hm_id` FOREIGN KEY (`health_monitor_id`) REFERENCES health_monitor(id),
-    CONSTRAINT `fk_p_l7_id` FOREIGN KEY (`lb_l7_policy_id`) REFERENCES lb_l7_policy(id)
+    CONSTRAINT `fk_p_cs_id` FOREIGN KEY (`content_switching_id`) REFERENCES content_switching(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `health_monitor`;
@@ -139,18 +139,16 @@ CREATE TABLE `lb_vip` (
     CONSTRAINT `fk_v_vip_id` FOREIGN KEY (vip_id) REFERENCES vip(id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `lb_l7_policy`;
-CREATE TABLE `lb_l7_policy` (
+DROP TABLE IF EXISTS `content_switching`;
+CREATE TABLE `content_switching` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `enabled` int(1) NOT NULL,
     `lb_id` int(11) NOT NULL,
-    `pool_id` int(11) DEFAULT NULL,
-    `condition` varchar(32) DEFAULT NULL,
+    `match` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_l7_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name),
-    CONSTRAINT `fk_l7_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
-    CONSTRAINT `fk_l7_pool_id` FOREIGN KEY (pool_id) REFERENCES pool(id)
+    CONSTRAINT `fk_l7_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `enum_lbaas_protocol`;

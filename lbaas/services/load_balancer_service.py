@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from lbaas.models.util.mappings.model_mapper import JsonToDomainModelMapper
 from lbaas.services.base import BaseService
 from lbaas.models.persistence import load_balancer, pool, \
-    lb_l7_policy, vip, member, ssl_encrypt, ssl_decrypt, \
+    content_switching, vip, member, ssl_encrypt, ssl_decrypt, \
     ssl_sni_decrypt_policy, ssl_sni_encrypt_policy, health_monitor
 
 
@@ -64,12 +64,11 @@ class LoadbalancerService(BaseService):
                 ##Update for certs/sni
                 tls_certificate=None)
 
-
         ##Content switching handled outside of load balancer create for now...
         ###WIP
         cs_in = None
         if 'content_switching' in json_lb:
-            cs_json = json_lb.get('content-switching')
+            cs_json = json_lb.get('content_switching')
             pools_in = []
             if 'pools' in cs_json:
                 pools_json = cs_json.get('pools')
@@ -77,11 +76,11 @@ class LoadbalancerService(BaseService):
                     pools_in.append(
                         JsonToDomainModelMapper().compile_pool_model_from_json(
                             tenant_id, p))
-            cs_in = lb_l7_policy.LbL7PolicyModel(
+            cs_in = content_switching.ContentSwitchingModel(
                 pools=pools_in,
-                enabled=cs_json.get('rule').get('enabled'),
-                condition=cs_json.get('rule').get('match'),
-                type=cs_json.get('rule').get('type'))
+                enabled=cs_json.get('enabled'),
+                match=cs_json.get('rule').get('match'),
+                type_=cs_json.get('rule').get('type'))
 
         lb_in = load_balancer.LoadbalancerModel(tenant_id,
                                                 vips=vips_in,
@@ -92,7 +91,7 @@ class LoadbalancerService(BaseService):
                                                 status="BUILD",
                                                 pool=pool_in,
                                                 ssl_decrypt=ssld_in,
-                                                lb_l7_policy=cs_in)
+                                                content_switching=cs_in)
         lb = self.lb_persistence.loadbalancer.create(lb_in)
 
         return lb
@@ -101,8 +100,9 @@ class LoadbalancerService(BaseService):
         self._validate_all_resources_exist(tenant_id=tenant_id)
         pass
 
-    def delete(self, tenant_id):
-        self._validate_all_resources_exist(tenant_id=tenant_id)
+    def delete(self, tenant_id, lb_id):
+        self._validate_all_resources_exist(tenant_id=tenant_id, lb_id=lb_id)
+        self.lb_persistence.loadbalancer.delete(lb_id)
         pass
 
 

@@ -5,7 +5,8 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from lbaas.models.persistence.ssl_decrypt import SslDecryptModel
 from lbaas.models.persistence.pool import PoolModel
 from lbaas.models.persistence.vip import VipModel
-from lbaas.models.persistence.lb_l7_policy import LbL7PolicyModel
+from lbaas.models.persistence.content_switching \
+    import ContentSwitchingModel
 
 from lbaas.models.persistence import base
 
@@ -29,14 +30,16 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     port = Column(String(32))
     protocol = Column(Integer(32))
     status = Column(Integer(32))
-    lb_l7_policy = relationship("LbL7PolicyModel", uselist=False,
-                         backref="load_balancer")
+    content_switching = relationship("ContentSwitchingModel",
+                                            uselist=False,
+                                            backref="load_balancer")
 
-    _child_classes = (PoolModel, SslDecryptModel, VipModel, LbL7PolicyModel)
+    _child_classes = (
+        PoolModel, SslDecryptModel, VipModel, ContentSwitchingModel)
 
     def __init__(self, tenant_id=None, pool=None, ssl_decrypt=None, vips=None,
                  name=None, port=None, protocol=None, status=None,
-                 lb_l7_policy=None):
+                 content_switching=None):
         self.tenant_id = tenant_id
         self.pool = pool
         self.ssl_decrypt = ssl_decrypt
@@ -45,7 +48,7 @@ class LoadbalancerModel(base.Base, base.BaseModel):
         self.port = port
         self.protocol = protocol
         self.status = status
-        self.lb_l7_policy = lb_l7_policy
+        self.content_switching = content_switching
 
     #def to_dict(self):
     #    lb_dict = {'id': self.id_, 'name': self.name}
@@ -54,9 +57,10 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     def __repr__(self):
         return '<LB %r>' % self.name
 
+
 lb_vip_table = Table('lb_vip', base.Base.metadata,
-    Column('lb_id', Integer, ForeignKey("load_balancer.id"),
-           primary_key=True),
-    Column('vip_id', Integer, ForeignKey("vip.id"),
-           primary_key=True)
+                     Column('lb_id', Integer, ForeignKey("load_balancer.id"),
+                            primary_key=True),
+                     Column('vip_id', Integer, ForeignKey("vip.id"),
+                            primary_key=True)
 )
