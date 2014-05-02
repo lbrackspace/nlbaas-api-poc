@@ -3,7 +3,6 @@ from flask import request
 from flask_restful import Resource
 from lbaas.repository.health_monitor_repository \
     import HealthMonitorRepositoryOps
-from lbaas.repository.lb_vip_repository import LbVipRepositoryOps
 from lbaas.repository.load_balancer_repository \
 import LoadbalancerRepositoryOps
 from lbaas.repository.pool_repository import PoolRepositoryOps
@@ -20,7 +19,6 @@ class BaseService(Resource):
         self.pool_persistence = PoolRepositoryOps()
         self.member_persistence = MemberRepositoryOps()
         self.vip_persistence = VipRepositoryOps()
-        self.lb_vip_persistence = LbVipRepositoryOps()
 
     def validate_resources(self):
         resources = request.view_args.copy()
