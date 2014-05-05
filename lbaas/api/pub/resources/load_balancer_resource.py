@@ -39,7 +39,7 @@ class LoadbalancersResource(BaseResource):
         except IntegrityError as e:
             ##Use custom errors to define actual issue for user
             print e
-            flask.abort(400)
+            return flask.Response(e.message, 400)
 
         return self._verify_and_form_response_body(lb, 'loadbalancer',
                                                    remove=_attrs_to_remove)

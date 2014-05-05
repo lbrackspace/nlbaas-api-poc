@@ -31,8 +31,8 @@ class LoadbalancerModel(base.Base, base.BaseModel):
     protocol = Column(Integer(32))
     status = Column(Integer(32))
     content_switching = relationship("ContentSwitchingModel",
-                                            uselist=False,
-                                            backref="load_balancer")
+                                     primaryjoin="ContentSwitchingModel.lb_id == LoadbalancerModel.id_",
+                                     uselist=False)
 
     _child_classes = (
         PoolModel, SslDecryptModel, VipModel, ContentSwitchingModel)
@@ -60,7 +60,7 @@ class LoadbalancerModel(base.Base, base.BaseModel):
 
 lb_vip_table = Table('lb_vip', base.Base.metadata,
                      Column('lb_id', Integer, ForeignKey("load_balancer.id"),
-                            primary_key=True),
+                            primary_key=False),
                      Column('vip_id', Integer, ForeignKey("vip.id"),
-                            primary_key=True)
+                            primary_key=False)
 )

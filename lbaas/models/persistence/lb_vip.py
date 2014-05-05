@@ -14,10 +14,11 @@ class LbVipModel(base.Base, base.BaseModel):
 
     TAG = 'lb_vip'
 
+    id_ = Column('id', Integer, primary_key=True)
     lb_id = Column(Integer, ForeignKey('load_balancer.id'))
     vip_id = Column(Integer, ForeignKey('vip.id'))
 
-    load_balancer = relationship(LoadbalancerModel, backref=backref("lb_vip", cascade="all"))
+    load_balancer = relationship(LoadbalancerModel)
     vip = relationship("VipModel")
 
     def __init__(self, load_balancer=None, vip=None):

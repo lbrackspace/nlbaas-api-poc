@@ -120,7 +120,6 @@ CREATE TABLE `load_balancer` (
     `ssl_decrypt_id` int(11) DEFAULT NULL,
     `pool_id` int(11) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
-    `content_switching` int(1) DEFAULT 0,
     `port` int(11) DEFAULT NULL,
     `protocol` varchar(32) DEFAULT NULL,
     `status` varchar(32) DEFAULT NULL,
@@ -132,11 +131,12 @@ CREATE TABLE `load_balancer` (
 
 DROP TABLE IF EXISTS `lb_vip`;
 CREATE TABLE `lb_vip` (
+    `id_` int(11) NOT NULL AUTO_INCREMENT,
     `lb_id` int(11) NOT NULL,
     `vip_id` int(11) DEFAULT NULL,
-    PRIMARY KEY (`lb_id`, `vip_id`),
-    CONSTRAINT `fk_v_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
-    CONSTRAINT `fk_v_vip_id` FOREIGN KEY (vip_id) REFERENCES vip(id)
+    PRIMARY KEY (`id_`)
+--    CONSTRAINT `fk_v_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id),
+--    CONSTRAINT `fk_v_vip_id` FOREIGN KEY (vip_id) REFERENCES vip(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `content_switching`;
@@ -147,8 +147,8 @@ CREATE TABLE `content_switching` (
     `match` varchar(32) DEFAULT NULL,
     `type` varchar(32) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `fk_cs_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name),
-    CONSTRAINT `fk_cs_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id)
+    CONSTRAINT `fk_cs_type` FOREIGN KEY (type) REFERENCES `enum_rule_type`(name)
+--    CONSTRAINT `fk_cs_lb_id` FOREIGN KEY (lb_id) REFERENCES load_balancer(id)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `enum_lbaas_protocol`;

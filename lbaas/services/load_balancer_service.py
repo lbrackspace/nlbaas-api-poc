@@ -39,11 +39,15 @@ class LoadbalancerService(BaseService):
         if "vips" in json_lb:
             vips_json = json_lb.get('vips')
             for v in vips_json:
-                vips_in.append(vip.VipModel(
-                    tenant_id=tenant_id,
-                    subnet_id=v.get('subnet_id'),
-                    type=v.get('type'),
-                    address=gen_ipv4()))
+                if 'vip_id' in v:
+                    self.vip_persistence.vip.get(tenant_id=tenant_id,
+                                                 vip_id=v.get('vip_id'))
+                else:
+                    vips_in.append(vip.VipModel(
+                        tenant_id=tenant_id,
+                        subnet_id=v.get('subnet_id'),
+                        type=v.get('type'),
+                        address=gen_ipv4()))
 
         ##Pool
         pool_in = None
@@ -69,18 +73,22 @@ class LoadbalancerService(BaseService):
         cs_in = None
         if 'content_switching' in json_lb:
             cs_json = json_lb.get('content_switching')
-            pools_in = []
-            if 'pools' in cs_json:
-                pools_json = cs_json.get('pools')
-                for p in pools_json:
-                    pools_in.append(
-                        JsonToDomainModelMapper().compile_pool_model_from_json(
-                            tenant_id, p))
-            cs_in = content_switching.ContentSwitchingModel(
-                pools=pools_in,
-                enabled=cs_json.get('enabled'),
-                match=cs_json.get('rule').get('match'),
-                type_=cs_json.get('rule').get('type'))
+            if 'id' in cs_json:
+                cs_in = self.content_swithcing_repository.content_switching\
+                    .get(tenant_id, cs_json.get('id'))
+            else:
+                pools_in = []
+                if 'pools' in cs_json:
+                    pools_json = cs_json.get('pools')
+                    for p in pools_json:
+                        pools_in.append(
+                            JsonToDomainModelMapper()
+                            .compile_pool_model_from_json(tenant_id, p))
+                cs_in = content_switching.ContentSwitchingModel(
+                    pools=pools_in,
+                    enabled=cs_json.get('enabled'),
+                    match=cs_json.get('rule').get('match'),
+                    type_=cs_json.get('rule').get('type'))
 
         lb_in = load_balancer.LoadbalancerModel(tenant_id,
                                                 vips=vips_in,
@@ -102,8 +110,16 @@ class LoadbalancerService(BaseService):
 
     def delete(self, tenant_id, lb_id):
         self._validate_all_resources_exist(tenant_id=tenant_id, lb_id=lb_id)
+        #lb = self.lb_persistence.loadbalancer.get(tenant_id, lb_id)
+
+        self.lb_vip_persistence.lb_vip.delete(lb_id)
         self.lb_persistence.loadbalancer.delete(lb_id)
-        pass
+
+        cs = self.content_swithcing_repository.content_switching\
+            .get_by_lb_id(tenant_id, lb_id)
+        cs.lb_id = None
+        self.content_swithcing_repository\
+            .content_switching.update(tenant_id, cs)
 
 
 class LoadbalancerServiceOps(object):

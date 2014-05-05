@@ -8,6 +8,8 @@ import LoadbalancerRepositoryOps
 from lbaas.repository.pool_repository import PoolRepositoryOps
 from lbaas.repository.member_repository import MemberRepositoryOps
 from lbaas.repository.vip_repository import VipRepositoryOps
+from lbaas.repository.lb_vip_repository import LbVipRepositoryOps
+from lbaas.repository.content_swithcing_repository import ContentSwitchingRepositoryOps
 
 
 class BaseService(Resource):
@@ -19,6 +21,8 @@ class BaseService(Resource):
         self.pool_persistence = PoolRepositoryOps()
         self.member_persistence = MemberRepositoryOps()
         self.vip_persistence = VipRepositoryOps()
+        self.lb_vip_persistence = LbVipRepositoryOps()
+        self.content_swithcing_repository = ContentSwitchingRepositoryOps()
 
     def validate_resources(self):
         resources = request.view_args.copy()

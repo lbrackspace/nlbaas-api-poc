@@ -26,7 +26,11 @@ class LoadbalancerRepository(BaseService):
         pass
 
     def delete(self, lb_id):
-        lb_vip.LbVipModel.query.filter_by(lb_id=lb_id).delete()
+        lb = load_balancer.LoadbalancerModel.query.filter_by(id_=lb_id).first()
+        lb.pool_id = None
+        lvips = lb.vips
+        lb.vips = []
+
         base.db.session.query(load_balancer.LoadbalancerModel)\
             .filter(load_balancer.LoadbalancerModel.id_ == lb_id).delete()
         base.db.session.commit()

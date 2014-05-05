@@ -21,8 +21,8 @@ from lbaas.api.pub.resources import load_balancer_resource, \
     health_monitor_resource, pool_resource, member_resource, vip_resource
 
 ##Add resources and routes here...
-api.add_resource(load_balancer_resource.LoadbalancerResource, '/<int:tenant_id>/loadbalancers/<int:lb_id>')
 api.add_resource(load_balancer_resource.LoadbalancersResource, '/<int:tenant_id>/loadbalancers')
+api.add_resource(load_balancer_resource.LoadbalancerResource, '/<int:tenant_id>/loadbalancers/<int:lb_id>')
 
 api.add_resource(pool_resource.PoolsResource, '/<int:tenant_id>/pools')
 api.add_resource(pool_resource.PoolResource, '/<int:tenant_id>/pools/<int:pool_id>')
