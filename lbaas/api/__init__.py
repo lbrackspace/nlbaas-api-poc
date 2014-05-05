@@ -29,7 +29,7 @@ api.add_resource(pool_resource.PoolsResource, '/<int:tenant_id>/pools')
 api.add_resource(pool_resource.PoolResource, '/<int:tenant_id>/pools/<int:pool_id>')
 
 api.add_resource(content_switching_resource.ContentSwitchingResource, '/<int:tenant_id>/contentswitching')
-api.add_resource(content_switching_resource.ContentSwitchingResource, '/<int:tenant_id>/contentswitching/<int:cs_id>')
+api.add_resource(content_switching_resource.ContentSwitchingsResource, '/<int:tenant_id>/contentswitching/<int:cs_id>')
 
 api.add_resource(health_monitor_resource.HealthMonitorResource, '/<int:tenant_id>/pools/<int:pool_id>/healthmonitor')
 
