@@ -18,7 +18,8 @@ api = Api(app)
 
 #from lbaas.api.pub.resources import #resources imported here...
 from lbaas.api.pub.resources import load_balancer_resource, \
-    health_monitor_resource, pool_resource, member_resource, vip_resource
+    health_monitor_resource, pool_resource, member_resource, vip_resource,\
+    content_switching_resource
 
 ##Add resources and routes here...
 api.add_resource(load_balancer_resource.LoadbalancersResource, '/<int:tenant_id>/loadbalancers')
@@ -26,6 +27,9 @@ api.add_resource(load_balancer_resource.LoadbalancerResource, '/<int:tenant_id>/
 
 api.add_resource(pool_resource.PoolsResource, '/<int:tenant_id>/pools')
 api.add_resource(pool_resource.PoolResource, '/<int:tenant_id>/pools/<int:pool_id>')
+
+api.add_resource(content_switching_resource.ContentSwitchingResource, '/<int:tenant_id>/contentswitching')
+api.add_resource(content_switching_resource.ContentSwitchingResource, '/<int:tenant_id>/contentswitching/<int:cs_id>')
 
 api.add_resource(health_monitor_resource.HealthMonitorResource, '/<int:tenant_id>/pools/<int:pool_id>/healthmonitor')
 
